@@ -1,8 +1,13 @@
 # app/services/quiz_logic.py
 from sqlalchemy.orm import Session
 from sqlalchemy import desc, asc
-from models import QuizQuestion, Submission, QuizSession
+from models import QuizQuestion, Submission, QuizSession, Participant
 from datetime import datetime
+
+# room logic
+import random, string
+def generate_room_code(length = 6):
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
 def add_quiz(db: Session, quiz_data: dict) -> QuizQuestion:
     quiz = QuizQuestion(
@@ -88,8 +93,10 @@ def get_leaderboard(db: Session, session_id: str):
     
     
 def create_session(db: Session, question_ids: list, config: dict = None, template_id: int = None):
+    room_code = generate_room_code()
     session = QuizSession(
         template_id=template_id,
+        room_code = room_code,
         questions=question_ids,
         status="waiting",
         config=config or {}
@@ -101,3 +108,15 @@ def create_session(db: Session, question_ids: list, config: dict = None, templat
 
 def get_session(db: Session, session_id: int):
     return db.query(QuizSession).filter(QuizSession.id == session_id).first()
+
+
+def add_participant(db: Session, username: str, room_code: str):
+    participant = Participant(username = username, room_code = room_code)
+    db.add(participant)
+    db.commit()
+    db.refresh(participant)
+    return participant
+
+def get_participants(db: Session, room_code: str):
+    return db.query(Participant).filter(Participant.room_code == room_code).all()
+    

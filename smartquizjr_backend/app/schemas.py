@@ -17,6 +17,7 @@ class QuizSessionCreate(BaseModel):
 
 class QuizSessionOut(QuizSessionCreate):
     id: int
+    room_code: str
     start_time: Optional[datetime]
     end_time: Optional[datetime]
 

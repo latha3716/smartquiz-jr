@@ -21,3 +21,34 @@ document.querySelector('.leave-btn').onclick = function() {
     localStorage.removeItem('roomcode')
     window.location.href = 'join.html'
 }
+
+async function checkSessionStatus() {
+  if (!roomcode) return;
+
+  try {
+    const response = await fetch(`http://localhost:8000/quiz/session/room/${roomcode}`);
+    const data = await response.json();
+
+    if (data.status === "active") {
+      window.location.href = `live_quiz.html?roomcode=${roomcode}&username=${username}`;
+    }
+  } catch (error) {
+    console.error("Failed to check session:", error);
+  }
+}
+setInterval(checkSessionStatus, 2000);
+
+
+async function checkQuizStatus() {
+    const res = await fetch(`http://localhost:8000/quiz/session/room/${roomcode}`);
+    const session = await res.json();
+
+    if (session.status === "active") {
+        window.location.href = `live_quiz.html?roomcode=${roomcode}&username=${username}`;
+    }
+}
+
+setInterval(checkQuizStatus, 2000);
+checkQuizStatus();
+
+

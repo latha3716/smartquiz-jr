@@ -13,6 +13,7 @@ class QuizSessionStatus(enum.Enum):
 class QuizSession(Base):
     __tablename__ = "quiz_sessions"
     id = Column(Integer, primary_key=True, index=True)
+    room_code = Column(String, unique = True, index = True)
     template_id = Column(Integer, nullable=True)  # Link to Quiz template if saved elsewhere
     questions = Column(JSON, nullable=False)  # Immutable question set as JSON (list of question IDs or full questions)
     status = Column(Enum(QuizSessionStatus), default=QuizSessionStatus.waiting, nullable=False)
@@ -50,3 +51,11 @@ class Submission(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     __table_args__ = (Index('idx_session_id', 'session_id'),)
+    
+class Participant(Base):
+    __tablename__ = "participants"
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String, nullable=False)
+    room_code = Column(String, nullable=False, index=True)
+    joined_at = Column(DateTime(timezone=True), server_default=func.now())

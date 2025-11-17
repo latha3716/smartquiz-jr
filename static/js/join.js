@@ -1,4 +1,3 @@
-// join.js
 document.querySelector('form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -10,18 +9,20 @@ document.querySelector('form').addEventListener('submit', async (e) => {
         return;
     }
 
-    // Send the data to the Flask Backend
-    const res = await fetch('/join', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username, roomcode})
-    });
+    try {
+        await axios.post(
+          `http://localhost:8000/quiz/join?username=${username}&room_code=${roomcode}`
+        );
 
-    const data = await res.json();
+        // Save values
+        localStorage.setItem("username", username);
+        localStorage.setItem("roomcode", roomcode);
 
-    if(data.success) {
-        window.location.href = `waiting?room=${roomcode}&username=${username}`
-    } else {
-        alert(data.message || "Room not found")
+        // redirect to waiting room
+        window.location.href = `waiting_room.html?roomcode=${roomcode}&username=${username}`;
+
+    } catch (error) {
+        alert("Failed to join room. Make sure room code is valid.");
+        console.error(error);
     }
-})
+});

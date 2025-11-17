@@ -2,9 +2,10 @@
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
-from services.quiz_logic import add_quiz, get_all_quizzes, get_quizzes_by_topic, evaluate_answers, get_leaderboard, create_session, get_session
+from services.quiz_logic import add_quiz, get_all_quizzes, get_quizzes_by_topic, evaluate_answers, get_leaderboard, create_session, get_session, add_participant, get_participants
 from schemas import QuizCreate, QuizSessionOut, QuizSessionCreate, QuizOut, QuizSubmit, QuizResult, LeaderboardEntry
 from typing import List
+from models import QuizSession
 
 router = APIRouter(
     prefix="/quiz",
@@ -19,9 +20,9 @@ def create_quiz(quiz: QuizCreate, db: Session = Depends(get_db)):
 def create_new_session(session_in: QuizSessionCreate, db: Session = Depends(get_db)):
     return create_session(db, session_in.questions, session_in.config, session_in.template_id)
 
-@router.get("/session/{session_id}", response_model=QuizSessionOut)
-def read_session(session_id: int, db: Session = Depends(get_db)):
-    session = get_session(db, session_id)
+@router.get("/session/room/{room_code}", response_model=QuizSessionOut)
+def read_session(room_code: str, db: Session = Depends(get_db)):
+    session = db.query(QuizSession).filter(QuizSession.room_code == room_code).first()
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
     return session
@@ -50,3 +51,23 @@ def leaderboard(session_id: str, db: Session = Depends(get_db)):
     if not results:
         raise HTTPException(status_code=404, detail="No submissions found for this session")
     return results
+
+
+@router.patch("/session/{room_code}/start")
+def start_session(room_code: str, db: Session = Depends(get_db)):
+    session = db.query(QuizSession).filter(QuizSession.room_code == room_code).first()
+    if not session:
+        raise HTTPException(status_code=404, detail="Room not found")
+
+    session.status = "active"
+    db.commit()
+    return {"message": "Quiz started!"}
+
+
+@router.post("/join")
+def join_quiz(username: str = Query(...), room_code: str = Query(...), db: Session = Depends(get_db)):
+    return add_participant(db, username, room_code)
+
+@router.get("/participants/{room_code}")
+def list_participants(room_code: str, db: Session = Depends(get_db)):
+    return get_participants(db, room_code)
