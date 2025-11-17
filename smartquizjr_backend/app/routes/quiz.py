@@ -37,7 +37,7 @@ def read_quizzes_by_topic(topic: str, difficulty: str = None, db: Session = Depe
 @router.post("/submit", response_model=QuizResult)
 def submit_quiz(
     answers: QuizSubmit,
-    user_id: int = Query(None),
+    user_id: str = Query(None),
     session_id: str = Query(None),
     time_taken_seconds: float = Query(None),
     db: Session = Depends(get_db)

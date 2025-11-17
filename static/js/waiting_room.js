@@ -1,3 +1,4 @@
+// waiting_room.js
 function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param)
@@ -18,5 +19,5 @@ document.querySelector('.leave-btn').onclick = function() {
     // clear data
     localStorage.removeItem('username')
     localStorage.removeItem('roomcode')
-    window.location.href = '/join.html'
+    window.location.href = 'join.html'
 }

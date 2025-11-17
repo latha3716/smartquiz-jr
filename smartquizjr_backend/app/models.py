@@ -38,7 +38,7 @@ class Submission(Base):
     __tablename__ = "submissions"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, nullable=True)  # For now, nullable since auth isn't added
+    user_id = Column(String, nullable=True)  # For now, nullable since auth isn't added
     session_id = Column(String, nullable=True)  # Optional identifier for a quiz session
     answers = Column(JSON, nullable=False)  # Raw submitted answers {question_id: chosen_option}
     score = Column(Integer, nullable=False)

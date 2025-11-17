@@ -1,8 +1,9 @@
+// join.js
 document.querySelector('form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const username = e.target.username.value.trim();
-    const roomcode = e.target.username.value.trim();
+    const roomcode = e.target.roomcode.value.trim();
 
     if(!username || !roomcode) {
         alert("Please enter your name and room code!");
@@ -19,7 +20,7 @@ document.querySelector('form').addEventListener('submit', async (e) => {
     const data = await res.json();
 
     if(data.success) {
-        window.location.href = `/waiting?room=${roomcode}&user=${username}`
+        window.location.href = `waiting?room=${roomcode}&username=${username}`
     } else {
         alert(data.message || "Room not found")
     }

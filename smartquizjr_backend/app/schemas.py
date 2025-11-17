@@ -65,7 +65,7 @@ class QuizOut(BaseModel):
         orm_mode = True
 
 class QuizSubmit(BaseModel):
-    answers: Dict[int, str] # Quiz question IDs mapped to submitted answers
+    answers: Dict[str, str] # Quiz question IDs mapped to submitted answers
     
 class QuizResult(BaseModel):
     score: int
