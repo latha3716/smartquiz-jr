@@ -8,19 +8,24 @@
     <meta http-equiv="Expires" content="0">
 
     <title>Start Quiz - SmartQuiz Jr</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+Bhai&family=Fredoka+One&family=Poppins&family=Quicksand&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="../static/css/teacher_start.css">
 </head>
 
 <body>
 
     <h2>Quiz Room: <span id="room"></span></h2>
-
+    <button id="create-session-btn">Create New Session</button>
     <div>
         <input type="text" id="room-input" placeholder="Enter room code">
         <button onclick="setRoom()">Go To Room</button>
     </div>
 
     <button id="start-btn">Start Quiz</button>
+
+    <button id="leaderboard-btn">Leaderboard</button>
 
     <h3>Students Joined:</h3>
     <ul id="students-list"></ul>

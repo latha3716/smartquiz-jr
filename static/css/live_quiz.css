@@ -1,11 +1,14 @@
 /* live_quiz.css */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai&family=Fredoka+One&family=Poppins&family=Quicksand&display=swap');
+
 * {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
-  background: #E3F2FD; /* Soft light blue */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #F5F7FF; /* Magic Mist */
+  font-family: 'Poppins', 'Quicksand', sans-serif;
   color: #1A237E; /* Dark blue text */
   display: flex;
   flex-direction: column;
@@ -14,35 +17,73 @@ body {
 
 /* Top Bar */
 header {
-  background: #BBDEFB; /* Light blue */
+  background: #FFB703; /* Golden Sparkle */
   padding: 0.8rem 1.2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: #0D47A1;
-  box-shadow: 0 2px 8px rgba(13, 71, 161, 0.15);
-}
-header .logo {
-  font-size: 1.5rem;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  font-size: 1rem;
+  color: #FFFFFF;
+  box-shadow: 0 2px 10px rgba(255, 183, 3, 0.4);
+  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
+  user-select: none;
+  position: relative;
 }
+
+/* Magical wand-like glowing timer */
+header .timer {
+  font-family: 'Fredoka One', cursive;
+  background: linear-gradient(90deg, #7D8CFF 20%, #A0A9FF 80%);
+  color: white;
+  padding: 0.2rem 0.8rem;
+  border-radius: 14px;
+  font-weight: 900;
+  min-width: 48px;
+  text-align: center;
+  box-shadow:
+    0 0 6px #7D8CFF,
+    0 0 12px #7D8CFF70,
+    0 0 18px #7D8CFF90;
+  animation: pulseGlow 2.5s ease-in-out infinite;
+  user-select: none;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 6px #7D8CFF70,
+      0 0 12px #7D8CFF50,
+      0 0 18px #7D8CFF30;
+  }
+  50% {
+    box-shadow:
+      0 0 12px #7D8CFF90,
+      0 0 24px #7D8CFFA0,
+      0 0 36px #7D8CFFB0;
+  }
+}
+
+/* Header text styles */
+header .logo {
+  font-size: 1.75rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #FFB703; /* Golden Sparkle */
+  text-shadow: 0 0 8px #FFB703AA;
+}
+
 header .right-group {
   display: flex;
-  gap: 1.4rem;
+  gap: 1.6rem;
   align-items: center;
+  font-weight: 600;
 }
-header .timer {
-  font-family: monospace;
-  background: #1976D2;
-  color: white;
-  padding: 0.15rem 0.6rem;
-  border-radius: 12px;
-  font-weight: 700;
-  min-width: 42px;
-  text-align: center;
+
+header .room-code,
+header .student-name {
+  font-family: 'Baloo Bhai', cursive;
+  user-select: none;
 }
 
 /* Question Container */
@@ -53,56 +94,91 @@ main {
   max-width: 600px;
   width: 90vw;
   margin: 2.5rem auto 3rem auto;
-  background: white;
-  border-radius: 20px;
-  padding: 1.8rem 2rem;
-  box-shadow: 0 4px 18px rgba(0, 0, 77, 0.12);
+  background: #FFFFFF; /* Scroll White */
+  border-radius: 24px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 6px 25px rgba(125, 140, 255, 0.25);
+  font-family: 'Poppins', 'Quicksand', sans-serif;
+  user-select: none;
 }
+
+/* Question numbering */
 .question-number {
-  font-weight: 600;
-  font-size: 1rem;
-  color: #0D47A1;
-  margin-bottom: 0.6rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #FFB703; /* Golden Sparkle */
+  margin-bottom: 1rem;
   text-align: center;
+  font-family: 'Fredoka One', cursive;
 }
+
+/* Question text */
 .question-text {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: #1A237E;
   text-align: center;
-  margin-bottom: 2rem;
-  line-height: 1.2;
+  margin-bottom: 2.4rem;
+  line-height: 1.3;
 }
+
+/* Options grid */
 .options {
   display: grid;
-  gap: 1.2rem;
+  gap: 1.4rem;
   grid-template-columns: 1fr 1fr;
 }
+
+/* Option buttons - bubble style */
 button.option {
-  background: #E3F2FD;
-  border: 2.5px solid transparent;
-  border-radius: 15px;
-  padding: 1rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1565C0;
+  background: #E3F2FD; /* Magic light blue bubble */
+  border: 3px solid transparent;
+  border-radius: 20px;
+  padding: 1.15rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #5865D6;
   cursor: pointer;
-  transition: background 0.22s, border-color 0.22s, transform 0.15s;
+  transition: background 0.3s, border-color 0.3s, transform 0.18s;
+  box-shadow: 0 4px 8px rgba(125, 140, 255, 0.2);
   user-select: none;
+  outline-offset: 3px;
+  outline-color: transparent;
 }
+
+/* Bubble pop on hover if not selected and enabled */
 button.option:hover:not(.selected):not(:disabled) {
-  background: #bbdefb;
+  background: #B6BBFF;
+  transform: scale(1.12);
+  border-color: #7D8CFF;
+  box-shadow: 0 6px 15px rgba(125, 140, 255, 0.5);
 }
+
+/* Selected option - correct answer style */
 button.option.selected {
-  background: #1976D2;
+  background: #4ADE80; /* Healing Green */
   color: white;
-  border-color: #0d47a1;
+  border-color: #3CB371;
   cursor: default;
-  transform: scale(1.04);
+  transform: scale(1.12);
+  box-shadow: 0 0 15px #4ADE80AA, 0 0 25px #4ADE80CC;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
+
+/* Disabled selected option style */
 button.option:disabled {
   cursor: default;
   opacity: 0.7;
+}
+
+/* Wrong answer button style */
+button.option.wrong {
+  background: #FF6B6B; /* Potion Spill Red */
+  color: white;
+  border-color: #E55353;
+  box-shadow: 0 0 15px #FF6B6BAA, 0 0 25px #FF6B6BCC;
+  cursor: default;
+  transform: scale(1.12);
 }
 
 /* Bottom Bar */
@@ -116,29 +192,48 @@ footer {
   font-size: 1rem;
   color: #333f7f;
   font-weight: 600;
-  gap: 1rem;
+  gap: 1.2rem;
+  font-family: 'Poppins', 'Quicksand', sans-serif;
+  user-select: none;
 }
+
+/* Submit button */
 .submit-btn {
-  padding: 0.9rem 2rem;
-  background: #1976D2;
+  padding: 1rem 2.2rem;
+  background: linear-gradient(90deg, #7D8CFF 60%, #A0A9FF 100%);
   color: white;
   border: none;
-  border-radius: 24px;
+  border-radius: 28px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.1rem;
   cursor: pointer;
   user-select: none;
-  transition: background 0.2s ease;
+  box-shadow: 0 6px 18px rgba(125, 140, 255, 0.6);
+  transition: background 0.3s ease, transform 0.18s ease;
+  position: relative;
+  overflow: hidden;
 }
+
+.submit-btn:hover:not(:disabled) {
+  background: linear-gradient(95deg, #676FDB 60%, #7D8CFF 100%);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(125, 140, 255, 0.8);
+}
+
+/* Disabled submit button state */
 .submit-btn:disabled {
   background: #90caf9;
   cursor: not-allowed;
+  box-shadow: none;
 }
+
+/* Progress text */
 .progress-text {
   flex-grow: 1;
   text-align: right;
   font-style: italic;
   color: #4a5f92;
+  font-family: 'Poppins', 'Quicksand', sans-serif;
 }
 
 /* Responsive */
@@ -151,9 +246,9 @@ footer {
     font-size: 1.25rem;
   }
   button.option {
-    font-size: 0.9rem;
-    padding: 0.9rem;
-    border-radius: 12px;
+    font-size: 0.95rem;
+    padding: 1rem;
+    border-radius: 16px;
   }
   footer {
     flex-direction: column;
@@ -163,4 +258,14 @@ footer {
   .progress-text {
     text-align: center;
   }
+}
+
+/* Micro animations for button click bounce */
+button.option:active, .submit-btn:active {
+  animation: bounceButton 0.25s ease forwards;
+}
+
+@keyframes bounceButton {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.1) translateY(-5px); }
 }

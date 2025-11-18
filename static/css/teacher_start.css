@@ -1,9 +1,11 @@
 /* teacher_start.css */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai&family=Fredoka+One&family=Poppins&family=Quicksand&display=swap');
+
 body {
-  background: #E3F2FD;
+  background: #F5F7FF; /* Magic Mist */
   margin: 0;
   min-height: 100vh;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: 'Poppins', 'Quicksand', sans-serif;
   color: #1A237E;
   display: flex;
   flex-direction: column;
@@ -12,15 +14,29 @@ body {
   box-sizing: border-box;
 }
 
+/* Heading */
 h2 {
-  font-size: 2rem;
+  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
+  font-size: 2.2rem;
   font-weight: 700;
-  color: #1976D2;
-  margin-bottom: 1.5rem;
+  color: #FFB703; /* Golden Sparkle */
+  margin-bottom: 1.6rem;
   text-align: center;
-  letter-spacing: 1px;
+  letter-spacing: 1.3px;
+  text-shadow: 0 0 10px #FFB703aa;
+  animation: glowHeading 3s ease-in-out infinite alternate;
 }
 
+@keyframes glowHeading {
+  from {
+    text-shadow: 0 0 10px #FFB703aa;
+  }
+  to {
+    text-shadow: 0 0 20px #FFB703ff;
+  }
+}
+
+/* Container for input + button */
 div {
   display: flex;
   gap: 0.8rem;
@@ -30,76 +46,101 @@ div {
   justify-content: center;
 }
 
+/* Input style */
 input[type="text"] {
   flex-grow: 1;
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1.1rem;
+  font-family: 'Poppins', 'Quicksand', sans-serif;
   font-size: 1rem;
-  border: 1.5px solid #BBDEFB;
-  border-radius: 18px;
+  border: 1.8px solid #BBDEFB;
+  border-radius: 20px;
   background: #F6FBFF;
   outline: none;
-  transition: border 0.2s;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 6px #7D8CFF33;
 }
 
 input[type="text"]:focus {
-  border-color: #1976D2;
+  border-color: #7D8CFF; /* Magic Indigo */
+  box-shadow: 0 0 14px #7D8CFFaa;
 }
 
+/* Buttons */
 button {
-  padding: 0.9rem 1.8rem;
-  background: linear-gradient(90deg, #1976D2 60%, #64B5F6 100%);
+  padding: 0.95rem 2rem;
+  background: linear-gradient(90deg, #7D8CFF 60%, #A0A9FF 100%);
   color: white;
-  font-weight: 600;
-  font-size: 1rem;
+  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
+  font-weight: 700;
+  font-size: 1.1rem;
   border: none;
-  border-radius: 24px;
+  border-radius: 28px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(39, 70, 120, 0.07);
-  transition: background 0.2s, transform 0.16s;
+  box-shadow: 0 6px 20px rgba(125, 140, 255, 0.6);
+  transition: background 0.3s, transform 0.2s ease;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
 }
 
 button:hover {
-  background: linear-gradient(95deg, #1565C0 60%, #1976D2 100%);
-  transform: translateY(-2px) scale(1.03);
+  background: linear-gradient(95deg, #676FDB 60%, #7D8CFF 100%);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 26px rgba(125, 140, 255, 0.85);
 }
 
+/* Start button full width style */
 #start-btn {
   width: 100%;
   max-width: 360px;
   margin-bottom: 2.5rem;
 }
 
+/* Subtitle */
 h3 {
-  color: #1565C0;
+  font-family: 'Baloo Bhai', cursive;
+  color: #7D8CFF; /* Magic Indigo */
   font-weight: 700;
-  font-size: 1.15rem;
-  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  margin-bottom: 1.2rem;
   text-align: center;
+  user-select: none;
 }
 
+/* Students list */
 #students-list {
   list-style: none;
   padding: 0;
   max-width: 360px;
   width: 100%;
-  color: #1976D2;
+  color: #4A5D92;
+  font-family: 'Poppins', 'Quicksand', sans-serif;
   font-weight: 600;
+  border-radius: 18px;
 }
 
 #students-list li {
   background: #F6FBFF;
   border: 1.5px solid #BBDEFB;
-  border-radius: 16px;
-  padding: 0.6rem 1rem;
-  margin-bottom: 0.5rem;
+  border-radius: 18px;
+  padding: 0.7rem 1.2rem;
+  margin-bottom: 0.6rem;
+  user-select: none;
+  box-shadow: 0 2px 6px rgba(125, 140, 255, 0.2);
+  transition: box-shadow 0.3s ease;
 }
 
+#students-list li:hover {
+  box-shadow: 0 4px 12px rgba(125, 140, 255, 0.4);
+}
+
+/* Responsive */
 @media (max-width: 490px) {
   body {
     padding: 1.5rem 1rem;
   }
   h2 {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
   }
   div {
     flex-direction: column;

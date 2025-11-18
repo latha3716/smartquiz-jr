@@ -1,94 +1,163 @@
 /* join.css */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai&family=Fredoka+One&family=Poppins&family=Quicksand&display=swap');
+
 body {
-      background: #E3F2FD;
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Segoe UI', Arial, sans-serif;
-    }
-    .card {
-      background: #fff;
-      padding: 2.5rem 2rem 1.5rem 2rem;
-      border-radius: 24px;
-      box-shadow: 0 4px 16px rgba(0,40,100,0.07);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 300px;
-      max-width: 90vw;
-      width: 360px;
-    }
-    .logo {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #1976D2;
-      letter-spacing: 1px;
-      margin-bottom: 1.5rem;
-    }
-    .input-group {
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-    .input-label {
-      display: flex;
-      align-items: center;
-      font-size: 1rem;
-      margin-bottom: 6px;
-      color: #1565C0;
-    }
-    .input-label span {
-      font-size: 1.2em;
-      margin-right: 8px;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      border: 1.5px solid #BBDEFB;
-      border-radius: 18px;
-      outline: none;
-      transition: border 0.2s;
-      background: #F6FBFF;
-    }
-    input[type="text"]:focus {
-      border: 1.5px solid #1976D2;
-    }
-    .join-btn {
-      width: 100%;
-      padding: 0.9rem;
-      background: linear-gradient(90deg, #1976D2 60%, #64B5F6 100%);
-      color: #fff;
-      font-size: 1.18rem;
-      font-weight: 600;
-      border: none;
-      border-radius: 24px;
-      margin-top: 0.5rem;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(39,70,120,0.07);
-      transition: background 0.2s, transform 0.16s;
-    }
-    .join-btn:hover {
-      background: linear-gradient(95deg, #1565C0 60%, #1976D2 100%);
-      transform: translateY(-2px) scale(1.03);
-    }
-    .footer {
-      margin-top: 1.8rem;
-      font-size: 0.99rem;
-      color: #90A4AE;
-      text-align: center;
-    }
-    @media (max-width: 490px) {
-      .card {
-        width: 98vw;
-        padding: 1.5rem 0.7rem 1.3rem 0.7rem;
-      }
-      .logo {
-        font-size: 1.45rem;
-      }
-      .join-btn {
-        font-size: 1rem;
-        padding: 0.85rem;
-      }
-    }
+  background: #F5F7FF; /* Magic Mist */
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', 'Quicksand', sans-serif;
+  color: #1A237E;
+}
+
+.card {
+  background: #FFFFFF; /* Scroll White */
+  padding: 2.5rem 2rem 1.5rem 2rem;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(125, 140, 255, 0.2); /* soft magic indigo glow */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 300px;
+  max-width: 90vw;
+  width: 360px;
+}
+
+.logo {
+  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #FFB703; /* Golden Sparkle */
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  user-select: none;
+  text-shadow: 0 0 6px #FFB703AA;
+  animation: glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 6px #FFB703AA;
+  }
+  to {
+    text-shadow: 0 0 12px #FFB703FF;
+  }
+}
+
+.input-group {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.input-label {
+  display: flex;
+  align-items: center;
+  font-family: 'Baloo Bhai', cursive;
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+  color: #FFB703; /* golden sparkle */
+  user-select: none;
+}
+
+.input-label span {
+  font-size: 1.4em;
+  margin-right: 8px;
+  /* subtle bounce animation on icons */
+  display: inline-block;
+  animation: bounceIcon 2.5s ease-in-out infinite;
+}
+
+@keyframes bounceIcon {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: 'Poppins', 'Quicksand', sans-serif;
+  font-size: 1rem;
+  border: 1.5px solid #BBDEFB;
+  border-radius: 18px;
+  outline: none;
+  transition: border 0.2s;
+  background: #F6FBFF;
+  box-shadow: 0 0 6px #7D8CFF33;
+}
+
+input[type="text"]:focus {
+  border: 1.5px solid #7D8CFF; /* Magic Indigo */
+  box-shadow: 0 0 12px #7D8CFFAA;
+}
+
+.join-btn {
+  width: 100%;
+  padding: 0.9rem;
+  background: linear-gradient(90deg, #7D8CFF 60%, #A0A9FF 100%); /* Magic Indigo gradient */
+  color: #fff;
+  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
+  font-size: 1.18rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 28px;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(125, 140, 255, 0.6);
+  transition: background 0.3s, transform 0.16s;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.join-btn::after {
+  content: '✨';
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.3rem;
+  opacity: 0;
+  animation: sparkle 2.5s infinite;
+  pointer-events: none;
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: translateY(-50%) scale(0.5); }
+  50% { opacity: 1; transform: translateY(-60%) scale(1); }
+}
+
+.join-btn:hover {
+  background: linear-gradient(95deg, #676FDB 60%, #7D8CFF 100%);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(125, 140, 255, 0.8);
+}
+
+.footer {
+  margin-top: 1.8rem;
+  font-family: 'Poppins', 'Quicksand', sans-serif;
+  font-size: 0.99rem;
+  color: #90A4AE;
+  text-align: center;
+  user-select: none;
+}
+
+@media (max-width: 490px) {
+  .card {
+    width: 98vw;
+    padding: 1.5rem 0.7rem 1.3rem 0.7rem;
+  }
+  .logo {
+    font-size: 1.45rem;
+  }
+  .join-btn {
+    font-size: 1rem;
+    padding: 0.85rem;
+  }
+}

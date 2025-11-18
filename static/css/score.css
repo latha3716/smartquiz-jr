@@ -1,8 +1,10 @@
 /* score.css */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai&family=Fredoka+One&family=Poppins&family=Quicksand&display=swap');
+
 body {
   margin: 0;
-  background: #E3F2FD;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #F5F7FF; /* Magic Mist */
+  font-family: 'Poppins', 'Quicksand', sans-serif;
   color: #1A237E;
   display: flex;
   flex-direction: column;
@@ -10,85 +12,139 @@ body {
   align-items: center;
 }
 
+/* Header */
 .score-header {
   text-align: center;
-  padding: 2rem 1rem 1rem 1rem;
-}
-.score-header .logo {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1976D2;
-  letter-spacing: 1.5px;
-  margin-bottom: 0.25rem;
-}
-.score-header .tagline {
-  font-size: 1.1rem;
-  color: #0D47A1;
+  padding: 2.5rem 1rem 1rem 1rem;
+  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
   user-select: none;
 }
 
+.score-header .logo {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #FFB703; /* Golden Sparkle */
+  letter-spacing: 1.6px;
+  margin-bottom: 0.25rem;
+  text-shadow: 0 0 8px #FFB703aa;
+  animation: glowLogo 3s ease-in-out infinite alternate;
+}
+
+@keyframes glowLogo {
+  from {
+    text-shadow: 0 0 8px #FFB703aa;
+  }
+  to {
+    text-shadow: 0 0 14px #FFB703ff;
+  }
+}
+
+.score-header .tagline {
+  font-size: 1.2rem;
+  color: #1565C0;
+  font-weight: 600;
+  margin-top: 0;
+}
+
+/* Result card */
 .result-card {
-  background: #fff;
+  background: #FFFFFF; /* Scroll White */
   max-width: 400px;
   width: 90vw;
   margin: 1rem auto 4rem auto;
   border-radius: 24px;
   padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 40, 130, 0.12);
+  box-shadow: 0 6px 24px rgba(125, 140, 255, 0.25);
   text-align: center;
+  font-family: 'Poppins', 'Quicksand', sans-serif;
+  user-select: none;
 }
 
+/* Score display */
 .score-display {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.7rem;
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 0.8rem;
   color: #0D47A1;
+  font-family: 'Fredoka One', cursive;
+  text-shadow: 0 0 6px #4ADE80aa;
+  animation: pulseScore 2.5s ease-in-out infinite alternate;
 }
 
+@keyframes pulseScore {
+  0%, 100% {
+    text-shadow: 0 0 6px #4ADE80aa;
+  }
+  50% {
+    text-shadow: 0 0 14px #4ADE80ff;
+  }
+}
+
+/* Performance summary */
 .performance-summary {
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
-  color: #1565C0;
+  font-size: 1.3rem;
+  margin-bottom: 1.7rem;
+  color: #4ADE80; /* Healing Green */
+  font-weight: 700;
 }
 
+/* Detailed breakdown */
 .detailed-breakdown {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 1.6rem;
-  font-weight: 600;
-  font-size: 1.05rem;
-  color: #1976D2;
+  margin-bottom: 1.8rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #7D8CFF; /* Magic Indigo */
 }
 
 .detailed-breakdown div {
   user-select: none;
 }
 
+/* Action buttons container */
 .action-buttons {
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.2rem;
   flex-wrap: wrap;
 }
 
+/* Action buttons */
 .action-buttons button {
-  background: #1976D2;
+  background: linear-gradient(90deg, #7D8CFF 60%, #A0A9FF 100%);
   color: white;
   border: none;
-  border-radius: 24px;
-  padding: 0.9rem 2.2rem;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 28px;
+  padding: 1rem 2.4rem;
+  font-size: 1.1rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.18s ease;
   user-select: none;
-  min-width: 110px;
+  min-width: 120px;
+  box-shadow: 0 6px 18px rgba(125, 140, 255, 0.7);
+  position: relative;
+  overflow: hidden;
 }
 
 .action-buttons button:hover {
-  background: #0D47A1;
+  background: linear-gradient(95deg, #676FDB 60%, #7D8CFF 100%);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(125, 140, 255, 0.85);
 }
 
+/* Button click bounce animation */
+.action-buttons button:active {
+  animation: bounceButton 0.25s ease forwards;
+}
+
+@keyframes bounceButton {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.1) translateY(-5px); }
+}
+
+/* Footer */
 .score-footer {
   margin-top: auto;
   padding: 1.3rem 0;
@@ -96,6 +152,7 @@ body {
   font-weight: 600;
   user-select: none;
   font-size: 0.95rem;
+  font-family: 'Poppins', 'Quicksand', sans-serif;
 }
 
 /* Responsive */
@@ -104,9 +161,9 @@ body {
     padding: 1.5rem;
   }
   .score-display {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
   .performance-summary {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 }

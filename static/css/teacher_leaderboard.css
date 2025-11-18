@@ -1,83 +1,117 @@
 /* teacher_leaderboard.css */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai&family=Fredoka+One&family=Poppins&family=Quicksand&display=swap');
+
 body {
-      background: #E3F2FD;
-      margin: 0;
-      min-height: 100vh;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      color: #1A237E;
-    }
+  background: #F5F7FF; /* Magic Mist */
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Poppins', 'Quicksand', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  color: #1A237E;
+}
 
-    .card {
-      background: #fff;
-      padding: 2rem 2.5rem;
-      border-radius: 24px;
-      box-shadow: 0 4px 16px rgba(0, 40, 100, 0.07);
-      width: 100%;
-      max-width: 700px;
-      box-sizing: border-box;
-    }
+/* Container card if used */
+.card {
+  background: #FFFFFF; /* Scroll White */
+  padding: 2rem 2.5rem;
+  border-radius: 24px;
+  box-shadow: 0 6px 25px rgba(125, 140, 255, 0.22);
+  width: 100%;
+  max-width: 700px;
+  box-sizing: border-box;
+}
 
-    h1 {
-      font-weight: 700;
-      font-size: 1.8rem;
-      color: #1976D2;
-      margin-bottom: 0.3rem;
-      text-align: center;
-      letter-spacing: 1px;
-    }
+/* Heading */
+h1 {
+  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
+  font-weight: 700;
+  font-size: 2rem;
+  color: #FFB703; /* Golden Sparkle */
+  margin-bottom: 0.5rem;
+  text-align: center;
+  letter-spacing: 1.2px;
+  text-shadow: 0 0 8px #FFB703aa;
+  animation: glowHeading 3s ease-in-out infinite alternate;
+  user-select: none;
+}
 
-    #status {
-      font-weight: 600;
-      color: #1565C0;
-      margin-bottom: 1rem;
-      text-align: center;
-      min-height: 1.3rem;
-    }
+@keyframes glowHeading {
+  from {
+    text-shadow: 0 0 8px #FFB703aa;
+  }
+  to {
+    text-shadow: 0 0 14px #FFB703ff;
+  }
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      color: #1565C0;
-    }
+/* Status text */
+#status {
+  font-weight: 600;
+  color: #7D8CFF; /* Magic Indigo */
+  margin-bottom: 1rem;
+  text-align: center;
+  min-height: 1.3rem;
+  font-family: 'Baloo Bhai', cursive;
+  user-select: none;
+}
 
-    th,
-    td {
-      padding: 12px 15px;
-      border: 1px solid #BBDEFB;
-      text-align: left;
-    }
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.6rem;
+  font-size: 1.05rem;
+  color: #4A5D92; /* softened blue */
+  font-family: 'Poppins', 'Quicksand', sans-serif;
+  box-shadow: 0 4px 18px rgba(125, 140, 255, 0.15);
+  border-radius: 16px;
+  overflow: hidden;
+}
 
-    th {
-      background: #BBDEFB;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-    }
+/* Table header and cells */
+th,
+td {
+  padding: 13px 16px;
+  border: 1px solid #BBDEFB;
+  text-align: left;
+  user-select: none;
+}
 
-    tbody tr:hover {
-      background-color: #E3F2FD;
-      cursor: default;
-    }
+/* Table header */
+th {
+  background: #FFB703; /* Golden Sparkle */
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-family: 'Fredoka One', cursive;
+  text-shadow: 0 0 6px #CC8A00;
+}
 
-    @media (max-width: 480px) {
-      .card {
-        padding: 1.5rem 1rem;
-        max-width: 98vw;
-      }
+/* Table row hover effect */
+tbody tr:hover {
+  background-color: #B6BBFF66; /* soft magical highlight */
+  cursor: default;
+  transition: background-color 0.3s ease;
+}
 
-      h1 {
-        font-size: 1.5rem;
-      }
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .card {
+    padding: 1.5rem 1rem;
+    max-width: 98vw;
+  }
 
-      table,
-      th,
-      td {
-        font-size: 0.9rem;
-        padding: 8px 10px;
-      }
-    }
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  table,
+  th,
+  td {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+}
