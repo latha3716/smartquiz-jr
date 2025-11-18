@@ -1,4 +1,4 @@
-/* join.css */
+/* styles.css */
 body {
       background: #E3F2FD;
       margin: 0;
@@ -10,7 +10,7 @@ body {
     }
     .card {
       background: #fff;
-      padding: 2.5rem 2rem 1.5rem 2rem;
+      padding: 2.5rem 2rem 2rem 2rem;
       border-radius: 24px;
       box-shadow: 0 4px 16px rgba(0,40,100,0.07);
       display: flex;
@@ -18,77 +18,59 @@ body {
       align-items: center;
       min-width: 300px;
       max-width: 90vw;
-      width: 360px;
+      width: 370px;
     }
     .logo {
-      font-size: 2rem;
+      font-size: 2.1rem;
       font-weight: 700;
       color: #1976D2;
-      letter-spacing: 1px;
-      margin-bottom: 1.5rem;
+      letter-spacing: 1.5px;
+      margin-bottom: 1.1rem;
+      text-align: center;
     }
-    .input-group {
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-    .input-label {
-      display: flex;
-      align-items: center;
-      font-size: 1rem;
-      margin-bottom: 6px;
+    .tagline {
+      font-size: 1.12rem;
       color: #1565C0;
-    }
-    .input-label span {
-      font-size: 1.2em;
-      margin-right: 8px;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      border: 1.5px solid #BBDEFB;
-      border-radius: 18px;
-      outline: none;
-      transition: border 0.2s;
-      background: #F6FBFF;
-    }
-    input[type="text"]:focus {
-      border: 1.5px solid #1976D2;
+      margin-bottom: 2.1rem;
+      text-align: center;
     }
     .join-btn {
       width: 100%;
-      padding: 0.9rem;
+      padding: 1rem;
       background: linear-gradient(90deg, #1976D2 60%, #64B5F6 100%);
       color: #fff;
-      font-size: 1.18rem;
+      font-size: 1.11rem;
       font-weight: 600;
       border: none;
       border-radius: 24px;
-      margin-top: 0.5rem;
+      margin-top: 0.4rem;
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(39,70,120,0.07);
       transition: background 0.2s, transform 0.16s;
     }
     .join-btn:hover {
       background: linear-gradient(95deg, #1565C0 60%, #1976D2 100%);
-      transform: translateY(-2px) scale(1.03);
+      transform: translateY(-2px) scale(1.04);
     }
     .footer {
-      margin-top: 1.8rem;
+      margin-top: 2.5rem;
       font-size: 0.99rem;
       color: #90A4AE;
       text-align: center;
     }
     @media (max-width: 490px) {
       .card {
-        width: 98vw;
-        padding: 1.5rem 0.7rem 1.3rem 0.7rem;
+        width: 97vw;
+        padding: 1.4rem 1rem 1.3rem 1rem;
       }
       .logo {
-        font-size: 1.45rem;
+        font-size: 1.37rem;
+      }
+      .tagline {
+        font-size: 0.97rem;
       }
       .join-btn {
-        font-size: 1rem;
+        font-size: 0.99rem;
         padding: 0.85rem;
       }
     }

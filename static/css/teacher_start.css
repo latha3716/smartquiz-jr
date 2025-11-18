@@ -1,0 +1,122 @@
+/* teacher_start.css */
+body {
+  background: #E3F2FD;
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #1A237E;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1.5rem;
+  box-sizing: border-box;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1976D2;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+div {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1.8rem;
+  width: 100%;
+  max-width: 360px;
+  justify-content: center;
+}
+
+input[type="text"] {
+  flex-grow: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1.5px solid #BBDEFB;
+  border-radius: 18px;
+  background: #F6FBFF;
+  outline: none;
+  transition: border 0.2s;
+}
+
+input[type="text"]:focus {
+  border-color: #1976D2;
+}
+
+button {
+  padding: 0.9rem 1.8rem;
+  background: linear-gradient(90deg, #1976D2 60%, #64B5F6 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(39, 70, 120, 0.07);
+  transition: background 0.2s, transform 0.16s;
+}
+
+button:hover {
+  background: linear-gradient(95deg, #1565C0 60%, #1976D2 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+
+#start-btn {
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 2.5rem;
+}
+
+h3 {
+  color: #1565C0;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+#students-list {
+  list-style: none;
+  padding: 0;
+  max-width: 360px;
+  width: 100%;
+  color: #1976D2;
+  font-weight: 600;
+}
+
+#students-list li {
+  background: #F6FBFF;
+  border: 1.5px solid #BBDEFB;
+  border-radius: 16px;
+  padding: 0.6rem 1rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 490px) {
+  body {
+    padding: 1.5rem 1rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+  div {
+    flex-direction: column;
+    gap: 0.7rem;
+    max-width: 100%;
+  }
+  input[type="text"] {
+    width: 100%;
+  }
+  button {
+    width: 100%;
+    max-width: none;
+  }
+  #start-btn {
+    max-width: 100%;
+  }
+  #students-list, #students-list li {
+    max-width: 100%;
+  }
+}

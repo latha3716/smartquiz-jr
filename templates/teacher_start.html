@@ -1,9 +1,16 @@
 <!-- teacher_start.html -->
 <!DOCTYPE html>
 <html>
+
 <head>
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     <title>Start Quiz - SmartQuiz Jr</title>
+    <link rel="stylesheet" href="../static/css/teacher_start.css">
 </head>
+
 <body>
 
     <h2>Quiz Room: <span id="room"></span></h2>
@@ -18,6 +25,7 @@
     <h3>Students Joined:</h3>
     <ul id="students-list"></ul>
 
-    <script src="../static/js/teacher_start.js"></script>
+    <script src="../static/js/teacher_start.js?v=${new Date().getTime()}"></script>
 </body>
+
 </html>

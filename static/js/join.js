@@ -1,4 +1,12 @@
 // join.js
+window.addEventListener("load", () => {
+  sessionStorage.clear();
+  localStorage.removeItem("room_code");
+  localStorage.removeItem("username");
+});
+
+
+
 document.querySelector('form').addEventListener('submit', async (e) => {
     e.preventDefault();
 

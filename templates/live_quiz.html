@@ -3,6 +3,10 @@
 <html lang="en">
 
 <head>
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartQuiz Jr - Live Quiz</title>
@@ -35,7 +39,7 @@
         <div class="progress-text" id="progress-text">Waiting for next question…</div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="../static/js/live_quiz.js"></script>
+    <script src="../static/js/live_quiz.js?v=${new Date().getTime()}"></script>
 </body>
 
 </html>
