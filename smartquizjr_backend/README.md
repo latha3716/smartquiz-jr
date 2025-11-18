@@ -117,7 +117,7 @@ AI_API_KEY=your_ai_api_key_here
 uvicorn app.main:app --reload
 ```
 Server will start at: 
-`http://localhost:8000`
+`http://192.168.1.9:8000`
 
 ### API Overview
 | Endpoint            | Method | Description                      |

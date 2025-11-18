@@ -26,7 +26,7 @@ async function checkSessionStatus() {
   if (!roomcode) return;
 
   try {
-    const response = await fetch(`http://localhost:8000/quiz/session/room/${roomcode}`);
+    const response = await fetch(`http://192.168.1.9:8000/quiz/session/room/${roomcode}`);
     const data = await response.json();
 
     if (data.status === "active") {
@@ -40,7 +40,7 @@ setInterval(checkSessionStatus, 2000);
 
 
 async function checkQuizStatus() {
-    const res = await fetch(`http://localhost:8000/quiz/session/room/${roomcode}`);
+    const res = await fetch(`http://192.168.1.9:8000/quiz/session/room/${roomcode}`);
     const session = await res.json();
 
     if (session.status === "active") {

@@ -4,7 +4,7 @@ const score = parseInt(localStorage.getItem("score")) || 0;
 const total = parseInt(localStorage.getItem("total")) || 0;
 const percentage = parseFloat(localStorage.getItem("percentage")) || 0;
 const feedback = localStorage.getItem("feedback") || "Great effort!";
-const timeTaken = parseFloat(localStorage.getItem("timeTakenSeconds")) || null; 
+const timeTaken = parseFloat(localStorage.getItem("timeTakenSeconds")) || null;
 
 // Elements
 const scoreDisplay = document.getElementById('score-display');
@@ -50,3 +50,18 @@ document.getElementById('exit-btn').onclick = () => {
   localStorage.clear();
   window.location.href = "index.html";
 };
+
+
+async function populateRank() {
+  const room = localStorage.getItem('roomcode');
+  const username = localStorage.getItem('username');
+  const res = await fetch(`http://192.168.1.9:8000/quiz/session/${room}/leaderboard`);
+  if (res.ok) {
+    const rows = await res.json();
+    const pid = localStorage.getItem("participant_id");
+    const idx = rows.findIndex(r => (r.user_id == pid));
+    if (idx >= 0) {
+      document.getElementById('rank').textContent = `Your Rank: ${idx + 1} / ${rows.length}`;
+    }
+  }
+}

@@ -25,14 +25,16 @@ class QuizSessionOut(QuizSessionCreate):
         orm_mode = True
 
 class LeaderboardEntry(BaseModel):
-    user_id: Optional[int]
-    session_id: Optional[str]
+    id: int
+    user_id: int
+    username: str
     score: int
     time_taken_seconds: Optional[float]
-    submitted_at: Optional[datetime] 
-    
+    submitted_at: Optional[datetime]
+
     class Config:
         orm_mode = True
+
 
 class QuizCreate(BaseModel):
     question: str

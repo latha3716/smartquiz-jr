@@ -1,0 +1,24 @@
+<!-- teacher_leaderboard.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Teacher - Leaderboard</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th, td { padding: 8px 12px; border: 1px solid #ddd; text-align: left; }
+    th { background: #f3f3f3; }
+  </style>
+</head>
+<body>
+  <h1>Leaderboard — Room: <span id="room"></span></h1>
+  <p id="status">Loading...</p>
+  <table id="leader-table" hidden>
+    <thead><tr><th>#</th><th>Student</th><th>Score</th><th>Time (s)</th><th>Submitted At</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="../static/js/teacher_leaderboard.js"></script>
+</body>
+</html>

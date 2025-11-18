@@ -81,6 +81,22 @@ def evaluate_answers(db: Session, answers_dict: dict, user_id: int = None, sessi
     db.commit()
     db.refresh(submission)
 
+    try:
+        # participants table contains entries joined by room_code
+        participants_count = db.query(Participant).filter(Participant.room_code == session_id).count()
+        submissions_count = db.query(Submission).filter(Submission.session_id == session_id).count()
+        if participants_count > 0 and submissions_count >= participants_count:
+            # find the session and mark ended
+            s = db.query(QuizSession).filter(QuizSession.room_code == session_id).first()
+            if s:
+                from models import QuizSessionStatus as QSS
+                s.status = QSS.ended
+                s.end_time = datetime.utcnow()
+                db.commit()
+    except Exception:
+        # don't let this break the response — log if you want
+        pass
+
     return {"score": score, "total": total, "percentage": percentage, "feedback": feedback}
 
 def get_leaderboard(db: Session, session_id: str):

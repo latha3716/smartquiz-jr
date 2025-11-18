@@ -12,7 +12,7 @@ async function loadParticipants() {
     if (!roomcode) return;
 
     try {
-        const res = await fetch(`http://localhost:8000/quiz/participants/${roomcode}`);
+        const res = await fetch(`http://192.168.1.9:8000/quiz/participants/${roomcode}`);
         const students = await res.json();
 
         const ul = document.getElementById("students-list");
@@ -35,7 +35,7 @@ loadParticipants(); // load immediately first time
 // Start quiz
 document.getElementById("start-btn").onclick = async () => {
     try {
-        await fetch(`http://localhost:8000/quiz/session/${roomcode}/start`, {
+        await fetch(`http://192.168.1.9:8000/quiz/session/${roomcode}/start`, {
             method: "PATCH"
         });
         alert("Quiz Started!");

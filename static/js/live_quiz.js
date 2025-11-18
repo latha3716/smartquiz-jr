@@ -2,20 +2,32 @@
 let questions = [];
 let answers = {};
 let quizStartTime = null;
-initQuiz();
+// initQuiz();
+
+// async function loadQuizzes() {
+//   try {
+//     const response = await axios.get("http://192.168.1.9:8000/quiz/all");
+//     const quizzes = response.data;
+
+//     console.log("Quizzes: ", quizzes);
+//     return quizzes;
+
+//   } catch (error) {
+//     console.error("Error fetching quizzes: ", error);
+//   }
+// }
 
 async function loadQuizzes() {
-  try {
-    const response = await axios.get("http://localhost:8000/quiz/all");
-    const quizzes = response.data;
+  const session = await axios.get(`http://192.168.1.9:8000/quiz/session/room/${roomcode}`);
+  const qIds = session.data.questions;
 
-    console.log("Quizzes: ", quizzes);
-    return quizzes;
-
-  } catch (error) {
-    console.error("Error fetching quizzes: ", error);
-  }
+  const allQuestions = await axios.get("http://192.168.1.9:8000/quiz/all");
+  // return allQuestions.data.filter(q => qIds.includes(q.id));
+  const quizzes = allQuestions.data;
+  console.log(quizzes)
+  return quizzes;
 }
+
 
 async function initQuiz() {
   questions = await loadQuizzes();   // Wait for data!
@@ -52,7 +64,6 @@ const roomcode = localStorage.getItem('roomcode') || '-';
 const username = localStorage.getItem('username') || '-';
 roomCodeEl.textContent = `Room: ${roomcode}`;
 studentNameEl.textContent = `Student: ${username}`;
-
 
 function startTimer() {
   let timeLeft = timerDuration;
@@ -145,20 +156,16 @@ function handleSubmit() {
 
 async function submitAnswers() {
   try {
-    const userId = username;   // Change dynamically as needed
+    const userId = localStorage.getItem("participant_id");   // Change dynamically as needed
     const sessionId = roomcode;  // Change dynamically as needed
 
     const timeTakenSeconds = (Date.now() - quizStartTime) / 1000;
 
     const response = await axios.post(
-      `http://localhost:8000/quiz/submit?user_id=${userId}&session_id=${sessionId}&time_taken_seconds=${timeTakenSeconds}`,
+      `http://192.168.1.9:8000/quiz/submit?user_id=${userId}&session_id=${sessionId}&time_taken_seconds=${timeTakenSeconds}`,
       { "answers": answers }
     );
 
-    // const response = await axios.post(
-    //   `http://localhost:8000/quiz/submit?user_id=${userId}&session_id=${sessionId}`,
-    //   { answers }
-    // );
     const result = response.data;
 
     localStorage.setItem("score", result.score);
@@ -167,10 +174,34 @@ async function submitAnswers() {
     localStorage.setItem("feedback", result.feedback);
     localStorage.setItem("timeTakenSeconds", timeTakenSeconds);
 
-    window.location.href = "score.html";
+    // Show "waiting for others" screen (simple UI)
+    optionsContainerEl.innerHTML = '';
+    questionNumberEl.textContent = 'Submitted — waiting for others...';
+    progressText.textContent = 'Waiting for other players to finish the quiz...';
+
+    // Poll the session status until it's ended
+    const pollInterval = 2000;
+    const poll = setInterval(async () => {
+      try {
+        const res = await fetch(`http://192.168.1.9:8000/quiz/session/room/${sessionId}`);
+        if (!res.ok) {
+          // keep waiting; optionally handle 404
+          return;
+        }
+        const session = await res.json();
+        if (session.status === 'ended' || session.status === 'active' && session.end_time) {
+          clearInterval(poll);
+          // All finished — go to score page
+          window.location.href = "score.html"; // local static route
+        }
+      } catch (err) {
+        console.error('Error polling session status:', err);
+      }
+    }, pollInterval);
 
   } catch (error) {
     console.error("Error submitting quiz answers: ", error);
+    alert("Failed to submit answers. Try again.")
   }
 }
 
@@ -179,3 +210,5 @@ submitBtn.addEventListener('click', handleSubmit);
 // Start first question on load
 // loadQuestion(currentQuestionIndex);
 
+
+initQuiz();
