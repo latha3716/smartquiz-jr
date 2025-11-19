@@ -2,7 +2,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routes.quiz import router as quiz_router
+# from routes.quiz import router as quiz_router
+from app.routes.quiz import router as quiz_router
 
 from models import Base
 from database import engine
