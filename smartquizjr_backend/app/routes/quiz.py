@@ -143,7 +143,7 @@ def leaderboard(session_id: str, db: Session = Depends(get_db)):
 #     return {"message": "Quiz started!"}
 
 from datetime import datetime
-from models import QuizSessionStatus
+from app.models import QuizSessionStatus
 
 @router.patch("/session/{room_code}/start")
 def start_session(room_code: str, db: Session = Depends(get_db)):

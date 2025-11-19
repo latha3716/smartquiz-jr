@@ -89,7 +89,7 @@ def evaluate_answers(db: Session, answers_dict: dict, user_id: int = None, sessi
             # find the session and mark ended
             s = db.query(QuizSession).filter(QuizSession.room_code == session_id).first()
             if s:
-                from models import QuizSessionStatus as QSS
+                from app.models import QuizSessionStatus as QSS
                 s.status = QSS.ended
                 s.end_time = datetime.utcnow()
                 db.commit()
