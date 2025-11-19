@@ -12,7 +12,10 @@ from app.database import engine
 app = FastAPI(title="SmartQuiz Jr Backend", version="1.0")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins = ["*"],
+    allow_origins=[
+        "https://smartquiz-jr.vercel.app",
+        "http://localhost:5500",  # optional for testing
+    ],
     allow_credentials = True,
     allow_methods = ["*"],
     allow_headers = ["*"],
