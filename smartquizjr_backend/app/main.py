@@ -5,8 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 # from routes.quiz import router as quiz_router
 from app.routes.quiz import router as quiz_router
 
-from models import Base
-from database import engine
+from app.models import Base
+from app.database import engine
 
 # fastapi instance
 app = FastAPI(title="SmartQuiz Jr Backend", version="1.0")
