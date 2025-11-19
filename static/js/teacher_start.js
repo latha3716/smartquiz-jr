@@ -104,7 +104,7 @@ async function startQuiz() {
 // Redirect to leaderboard
 function goToLeaderboard() {
     if (!roomcode) return alert("No session created!");
-    window.open(`leaderboard.html?roomcode=${encodeURIComponent(roomcode)}`, "_blank");
+    window.open(`teacher_leaderboard.html?roomcode=${encodeURIComponent(roomcode)}`, "_blank");
 }
 
 // Manual room change still supported

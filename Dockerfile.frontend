@@ -1,0 +1,14 @@
+FROM python:3.10-alpine
+
+# Set working directory inside container
+WORKDIR /frontend
+
+# Copy your static and templates directories
+COPY static ./static
+COPY templates ./templates
+
+# Expose the same port you used locally (5500)
+EXPOSE 5500
+
+# Run the exact command you used locally
+CMD ["python3", "-m", "http.server", "5500", "--bind", "0.0.0.0", "--directory", ".", "--cgi"]
