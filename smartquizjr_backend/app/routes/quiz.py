@@ -2,11 +2,11 @@
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import asc, desc, cast, Integer
-from database import get_db
-from services.quiz_logic import add_quiz, get_all_quizzes, get_quizzes_by_topic, evaluate_answers, get_leaderboard, create_session, get_session, add_participant, get_participants
-from schemas import QuizCreate, QuizSessionOut, QuizSessionCreate, QuizOut, QuizSubmit, QuizResult, LeaderboardEntry
+from app.database import get_db
+from app.services.quiz_logic import add_quiz, get_all_quizzes, get_quizzes_by_topic, evaluate_answers, get_leaderboard, create_session, get_session, add_participant, get_participants
+from app.schemas import QuizCreate, QuizSessionOut, QuizSessionCreate, QuizOut, QuizSubmit, QuizResult, LeaderboardEntry
 from typing import List
-from models import QuizSession, Submission, Participant
+from app.models import QuizSession, Submission, Participant
 
 router = APIRouter(
     prefix="/quiz",

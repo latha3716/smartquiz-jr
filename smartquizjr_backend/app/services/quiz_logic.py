@@ -1,7 +1,7 @@
 # app/services/quiz_logic.py
 from sqlalchemy.orm import Session
 from sqlalchemy import desc, asc
-from models import QuizQuestion, Submission, QuizSession, Participant
+from app.models import QuizQuestion, Submission, QuizSession, Participant
 from datetime import datetime
 
 # room logic
