@@ -18,10 +18,16 @@ let quizStartTime = null;
 // }
 
 async function loadQuizzes() {
-  const session = await axios.get(`http://192.168.1.9:8000/quiz/session/room/${roomcode}`);
+  // const session = await axios.get(`http://192.168.1.9:8000/quiz/session/room/${roomcode}`);
+  const session = await axios.get(
+    `https://smartquiz-jr-production.up.railway.app/quiz/session/room/${roomcode}`
+  );
   const qIds = session.data.questions;
 
-  const allQuestions = await axios.get("http://192.168.1.9:8000/quiz/all");
+  // const allQuestions = await axios.get("http://192.168.1.9:8000/quiz/all");
+  const allQuestions = await axios.get(
+    "https://smartquiz-jr-production.up.railway.app/quiz/all"
+  );
   // return allQuestions.data.filter(q => qIds.includes(q.id));
   const quizzes = allQuestions.data;
   console.log(quizzes)
@@ -161,8 +167,12 @@ async function submitAnswers() {
 
     const timeTakenSeconds = (Date.now() - quizStartTime) / 1000;
 
+    // const response = await axios.post(
+    //   `http://192.168.1.9:8000/quiz/submit?user_id=${userId}&session_id=${sessionId}&time_taken_seconds=${timeTakenSeconds}`,
+    //   { "answers": answers }
+    // );
     const response = await axios.post(
-      `http://192.168.1.9:8000/quiz/submit?user_id=${userId}&session_id=${sessionId}&time_taken_seconds=${timeTakenSeconds}`,
+      `https://smartquiz-jr-production.up.railway.app/quiz/submit?user_id=${userId}&session_id=${sessionId}&time_taken_seconds=${timeTakenSeconds}`,
       { "answers": answers }
     );
 
@@ -183,7 +193,10 @@ async function submitAnswers() {
     const pollInterval = 2000;
     const poll = setInterval(async () => {
       try {
-        const res = await fetch(`http://192.168.1.9:8000/quiz/session/room/${sessionId}`);
+        // const res = await fetch(`http://192.168.1.9:8000/quiz/session/room/${sessionId}`);
+        const res = await fetch(
+          `https://smartquiz-jr-production.up.railway.app/quiz/session/room/${sessionId}`
+        );
         if (!res.ok) {
           // keep waiting; optionally handle 404
           return;

@@ -1,8 +1,8 @@
 // join.js
 window.addEventListener("load", () => {
-  sessionStorage.clear();
-  localStorage.removeItem("room_code");
-  localStorage.removeItem("username");
+    sessionStorage.clear();
+    localStorage.removeItem("room_code");
+    localStorage.removeItem("username");
 });
 
 
@@ -19,9 +19,13 @@ document.querySelector('form').addEventListener('submit', async (e) => {
     }
 
     try {
+        // const response = await axios.post(
+        //     `http://192.168.1.9:8000/quiz/join?username=${username}&room_code=${roomcode}`
+        // );
         const response = await axios.post(
-            `http://192.168.1.9:8000/quiz/join?username=${username}&room_code=${roomcode}`
+            `https://smartquiz-jr-production.up.railway.app/quiz/join?username=${username}&room_code=${roomcode}`
         );
+
         const data = response.data;
 
         if (data.participant_id) {

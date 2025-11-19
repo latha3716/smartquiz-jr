@@ -55,7 +55,8 @@ document.getElementById('exit-btn').onclick = () => {
 async function populateRank() {
   const room = localStorage.getItem('roomcode');
   const username = localStorage.getItem('username');
-  const res = await fetch(`http://192.168.1.9:8000/quiz/session/${room}/leaderboard`);
+  // const res = await fetch(`http://192.168.1.9:8000/quiz/session/${room}/leaderboard`);
+  const res = await fetch(`https://smartquiz-jr-production.up.railway.app/quiz/session/${room}/leaderboard`);
   if (res.ok) {
     const rows = await res.json();
     const pid = localStorage.getItem("participant_id");

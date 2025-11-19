@@ -4,14 +4,16 @@ document.getElementById('room').textContent = roomcode || '-';
 
 async function loadLeaderboard() {
   try {
-    const sessionRes = await fetch(`http://192.168.1.9:8000/quiz/session/room/${roomcode}`);
+    // const sessionRes = await fetch(`http://192.168.1.9:8000/quiz/session/room/${roomcode}`);
+    const sessionRes = await fetch(`https://smartquiz-jr-production.up.railway.app/quiz/session/room/${roomcode}`);
     if (!sessionRes.ok) {
       document.getElementById('status').textContent = 'Session not found.';
       return;
     }
     const session = await sessionRes.json();
 
-    const res = await fetch(`http://192.168.1.9:8000/quiz/session/room/${roomcode}/leaderboard`);
+    // const res = await fetch(`http://192.168.1.9:8000/quiz/session/room/${roomcode}/leaderboard`);
+    const res = await fetch(`https://smartquiz-jr-production.up.railway.app/quiz/session/room/${roomcode}/leaderboard`);
     if (!res.ok) {
       document.getElementById('status').textContent = 'No submissions yet.';
       return;

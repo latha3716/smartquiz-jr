@@ -1,5 +1,6 @@
 // teacher_start.js
-const API_BASE = "http://192.168.1.9:8000"; // change if needed
+// const API_BASE = "http://192.168.1.9:8000"; // change if needed
+const API_BASE = "https://smartquiz-jr-production.up.railway.app"; // change if needed
 
 let roomcode = localStorage.getItem("roomcode");
 let session_id = localStorage.getItem("session_id");
