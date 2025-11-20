@@ -8,6 +8,7 @@ from app.routes.ai_routes import router as ai_router
 
 from app.models import Base
 from app.database import engine
+from app.utils.vector_db_setup import init_vector_db
 
 # fastapi instance
 app = FastAPI(title="SmartQuiz Jr Backend", version="1.0")
@@ -21,6 +22,9 @@ app.add_middleware(
     allow_methods = ["*"],
     allow_headers = ["*"],
 )
+app.on_event("startup")
+def startup_event():
+    init_vector_db()
 Base.metadata.create_all(bind = engine)
 
 app.include_router(quiz_router)
