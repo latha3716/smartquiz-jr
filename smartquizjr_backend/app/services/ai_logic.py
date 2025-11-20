@@ -1,3 +1,4 @@
+# app/services/ai_logic.py
 from agno.agent import Agent, RunOutput
 from agno.models.groq import Groq
 from agno.models.openai import OpenAIChat
@@ -7,7 +8,7 @@ import os
 load_dotenv()
 
 from pydantic import BaseModel
-from typing import Dict
+from typing import Dict, List
 
 class QuizCreate(BaseModel):
     question: str
@@ -46,38 +47,21 @@ agno_agent = Agent(
     ],
     markdown=False,
     add_history_to_context=False,
-    
-    build_context=True,
-    build_user_context=True,
-    add_name_to_context=False,
-    add_datetime_to_context=False,
-    add_location_to_context=False,
-    
-    search_knowledge=True,
-    add_knowledge_to_context=True,
-    enable_agentic_knowledge_filters=False,
-
-    enable_agentic_memory=False,
-    enable_user_memories=False,
-    add_memories_to_context=False,
-    enable_session_summaries=False,
-    
+        
     structured_outputs=True,
-    output_schema=QuizCreate,
+    output_schema=List[QuizCreate],
     use_json_mode=True,
     parse_response=True,
     
-    reasoning=True,
-    reasoning_model=os.environ.get("GROQ_MODEL"),
-    reasoning_min_steps=1,
-    reasoning_max_steps=3,
-    
-    retries=2,
-    delay_between_retries=1,
-    exponential_backoff=True,
-    tool_call_limit=0,
-    debug_mode=False
 )
-def create_questions(topic: str, age: int, difficulty: str = 3, questions: int = 10):
-    response: RunOutput = agno_agent.run(f"Topic: {topic}, age: {age}, difficulty: {difficulty}, number of questions to return: {questions}", stream=False)
+def create_questions(topic: str, age: int, difficulty: str = "easy", questions: int = 10):
+    prompt = (
+        f"Topic: {topic}\n"
+        f"Age: {age}\n"
+        f"Difficulty: {difficulty}\n"
+        f"Number of questions: {questions}\n"
+        f"Generate the MCQs now."
+    )
+
+    response: RunOutput = agno_agent.run(prompt, stream=False)
     return response.content
