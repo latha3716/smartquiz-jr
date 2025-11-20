@@ -53,7 +53,7 @@ agno_agent = Agent(
         
     structured_outputs=True,
     output_schema=QuizCreate,
-    use_json_mode=True,
+    use_json_mode=False,
     parse_response=True,
     
 )
