@@ -121,14 +121,15 @@ def generate_single_question(topic: str, age: int, difficulty: str):
     cleaned = clean_json(response.content)
     return cleaned
 
-def create_questions(topic: str, age: int, difficulty: str, count: int):
+async def create_questions(topic: str, age: int, difficulty: str, count: int):
     final_questions = []
 
     for _ in range(count):
         q = generate_single_question(topic, age, difficulty)
-        knowledge.add_content(
-            text_content=json.dumps(q)
-        )
+        # knowledge.add_content(
+        #     text_content=json.dumps(q)
+        # )
+        await knowledge.add_content_async(text_content=json.dumps(q))
         final_questions.append(q)
         
 
