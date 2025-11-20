@@ -1,6 +1,6 @@
 #app/schemas.py
 from pydantic import BaseModel, validator, ValidationError
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Literal
 from datetime import datetime
 from enum import Enum
 
@@ -74,3 +74,10 @@ class QuizResult(BaseModel):
     score: int
     total: int
     
+    
+class AIRequest(BaseModel):
+    teacher_id: int
+    topic: str
+    age: int
+    difficulty: Literal["easy, medium, hard"]
+    questions: Optional[int] = 10
