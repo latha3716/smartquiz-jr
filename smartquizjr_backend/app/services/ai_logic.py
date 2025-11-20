@@ -121,7 +121,7 @@ def clean_json(text: str):
 #     cleaned = clean_json(response.content)
 #     return cleaned
 
-def generate_single_question(topic: str, age: int, difficulty: str, batch_id: str, max_attempts=5):
+async def generate_single_question(topic: str, age: int, difficulty: str, batch_id: str, max_attempts=5):
     """
     Generates a unique question, using the provided batch_id in metadata for later deletion.
     """
@@ -133,7 +133,7 @@ def generate_single_question(topic: str, age: int, difficulty: str, batch_id: st
             f"Generate exactly ONE MCQ now. (Attempt {attempt + 1}/{max_attempts})"
         )
 
-        response: RunOutput = agno_agent.run(prompt, stream=False)
+        response: RunOutput = await agno_agent.arun(prompt, stream=False)
         
         try:
             cleaned_question_data = clean_json(response.content)
@@ -163,7 +163,7 @@ def generate_single_question(topic: str, age: int, difficulty: str, batch_id: st
 
 #     return final_questions
 
-def create_questions(topic: str, age: int, difficulty: str, count: int):
+async def create_questions(topic: str, age: int, difficulty: str, count: int):
     """
     Generates a batch of questions, stores them temporarily in the KB, and returns them.
     Includes a try...finally block to ensure cleanup.
@@ -179,7 +179,7 @@ def create_questions(topic: str, age: int, difficulty: str, count: int):
             q_data = generate_single_question(topic, age, difficulty, batch_run_id)
             
             # Store the question in the KB with the unique batch_id metadata
-            knowledge.add_content(
+            await knowledge.add_content_async(
                 text_content=json.dumps(q_data),
                 metadata={
                     "batch_id": batch_run_id, # Key metadata for cleanup
@@ -207,22 +207,22 @@ def create_questions(topic: str, age: int, difficulty: str, count: int):
         
         # 1. Search for all contents matching the batch_id filter
         # NOTE: Filter functionality needs Agno/PgVector version that supports metadata filtering.
+        # 
         try:
-            contents_to_delete = knowledge.get_content(filters={"batch_id": batch_run_id})
-            
-            if contents_to_delete:
-                content_ids = [content.id for content in contents_to_delete]
-                print(f"Found {len(content_ids)} items to delete.")
-                
-                # 2. Delete found items one by one or in a batch if Agno API supports it
-                for c_id in content_ids:
-                     knowledge.remove_content_by_id(c_id)
-                print("Cleanup complete.")
-            else:
-                print("No items found to delete (perhaps an error occurred early).")
-        
+            # FIX: Old Agno does NOT support metadata filter
+            all_items = await knowledge.get_all_content_async()
+
+            to_delete = [item for item in all_items if item.metadata.get("batch_id") == batch_run_id]
+
+            print(f"Found {len(to_delete)} items to delete.")
+
+            for item in to_delete:
+                await knowledge.remove_content_by_id_async(item.id)
+
+            print("Cleanup complete.")
+
         except Exception as filter_error:
-            print(f"Could not use metadata filter for cleanup. Check Agno version/DB support: {filter_error}")
+            print(f"Cleanup failed: {filter_error}")
 
     # Return the generated questions to the user/frontend
     return final_questions
