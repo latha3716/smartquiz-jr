@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
-from pydantic import BaseModel
+from pydantic import BaseModel, RootModel
 from typing import Dict, List
 
 class QuizCreate(BaseModel):
@@ -17,8 +17,8 @@ class QuizCreate(BaseModel):
     topic: str
     difficulty: str
 
-class QuizList(BaseModel):
-    __root__: List[QuizCreate]
+class QuizList(RootModel[List[QuizCreate]]):
+    pass
 
 agno_agent = Agent(
     name = "SmartQuiz-Jr Quiz Generator",
