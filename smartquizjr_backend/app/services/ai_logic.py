@@ -9,12 +9,17 @@ load_dotenv()
 from pydantic import BaseModel, RootModel
 from typing import Dict, List
 
+import uuid
+from agno.knowledge.knowledge import Knowledge
+from agno.vectordb.pgvector import PgVector
+
 class QuizCreate(BaseModel):
     question: str
     options: Dict[str, str]
     correct_answer: str
     topic: str
     difficulty: str
+    age: int
 
 
 single_question_instructions = [
@@ -30,6 +35,11 @@ single_question_instructions = [
   "age": <integer>
 }
     """,
+    
+    # Knowledge-base / RAG rule
+    "Before generating a question, ALWAYS search the provided knowledge base (Questions_By_LLM).",
+    "If ANY question is identical or similar in meaning, structure, or numbers, you MUST generate a completely different question.",
+    "Your output must always be fully unique compared to everything in Questions_By_LLM.",
     
     # Core correctness rules
     "Before returning, DOUBLE-CHECK that the correct_answer matches the correct option.",
@@ -59,11 +69,21 @@ single_question_instructions = [
     "Return EXACT topic, difficulty, and age as provided."
 ]
 
+knowledge = Knowledge(
+    name="SmartQuiz-jr Vector DB",
+    vector_db= PgVector(
+        table_name="Questions_By_LLM",
+        db_url=os.environ.get("PG_VECTOR_URI")
+    )
+)
 
 agno_agent = Agent(
     name = "SmartQuiz-Jr Quiz Generator",
     # model = os.environ.get("GROQ_MODEL"),
     model = os.environ.get("OPENAI_MODEL"),
+    knowledge=knowledge,
+    search_knowledge=True,
+    add_knowledge_to_context=True,
     
     description="An agent that generates clean, age-appropriate MCQs based on topic, age, and difficulty",
     instructions=single_question_instructions,
@@ -89,24 +109,120 @@ def clean_json(text: str):
     return json.loads(json_text)
 
 
-def generate_single_question(topic: str, age: int, difficulty: str):
-    prompt = (
-        f"Topic: {topic}\n"
-        f"Age: {age}\n"
-        f"Difficulty: {difficulty}\n"
-        f"Generate exactly ONE MCQ now."
-    )
+# def generate_single_question(topic: str, age: int, difficulty: str):
+#     prompt = (
+#         f"Topic: {topic}\n"
+#         f"Age: {age}\n"
+#         f"Difficulty: {difficulty}\n"
+#         f"Generate exactly ONE MCQ now."
+#     )
 
-    response: RunOutput = agno_agent.run(prompt, stream=False)
-    cleaned = clean_json(response.content)
-    return cleaned
+#     response: RunOutput = agno_agent.run(prompt, stream=False)
+#     cleaned = clean_json(response.content)
+#     return cleaned
 
+def generate_single_question(topic: str, age: int, difficulty: str, batch_id: str, max_attempts=5):
+    """
+    Generates a unique question, using the provided batch_id in metadata for later deletion.
+    """
+    for attempt in range(max_attempts):
+        prompt = (
+            f"Topic: {topic}\n"
+            f"Age: {age}\n"
+            f"Difficulty: {difficulty}\n"
+            f"Generate exactly ONE MCQ now. (Attempt {attempt + 1}/{max_attempts})"
+        )
+
+        response: RunOutput = agno_agent.run(prompt, stream=False)
+        
+        try:
+            cleaned_question_data = clean_json(response.content)
+            validated_question = QuizCreate(**cleaned_question_data)
+            
+            print(f"Generated a unique question (Attempt {attempt + 1}).")
+            
+            # Return data AND the metadata needed for storage/deletion
+            return validated_question.model_dump()
+
+        except (ValueError, Exception) as e:
+            print(f"Error parsing response on attempt {attempt + 1}: {e}")
+            if attempt == max_attempts - 1:
+                raise RuntimeError("Failed to generate a valid, unique question after several attempts.")
+            continue
+
+# def create_questions(topic: str, age: int, difficulty: str, count: int):
+#     final_questions = []
+
+#     for _ in range(count):
+#         q = generate_single_question(topic, age, difficulty)
+#         knowledge.add_content(
+#             text_content=json.dumps(q)
+#         )
+#         final_questions.append(q)
+        
+
+#     return final_questions
 
 def create_questions(topic: str, age: int, difficulty: str, count: int):
+    """
+    Generates a batch of questions, stores them temporarily in the KB, and returns them.
+    Includes a try...finally block to ensure cleanup.
+    """
+    # Generate a unique ID for this specific run/batch
+    batch_run_id = str(uuid.uuid4())
     final_questions = []
+    
+    print(f"Starting batch with ID: {batch_run_id}")
 
-    for _ in range(count):
-        q = generate_single_question(topic, age, difficulty)
-        final_questions.append(q)
+    try:
+        for _ in range(count):
+            q_data = generate_single_question(topic, age, difficulty, batch_run_id)
+            
+            # Store the question in the KB with the unique batch_id metadata
+            knowledge.add_content(
+                text_content=json.dumps(q_data),
+                metadata={
+                    "batch_id": batch_run_id, # Key metadata for cleanup
+                    "topic": topic, 
+                    "difficulty": difficulty, 
+                    "age": age
+                }
+            )
+            
+            final_questions.append(q_data)
+            print(f"Added new question to KB: {q_data['question'][:30]}...")
+            
+    except Exception as e:
+        print(f"An error occurred during generation: {e}")
+        # Decide if you want to clean up partially generated questions here or in finally
+        # We will clean up in the finally block.
+    finally:
+        # !!! CRITICAL STEP: Delete all questions associated with this batch ID !!!
+        # This makes the "temporary avoidance" strategy work.
+        print(f"Cleaning up knowledge base entries for batch ID: {batch_run_id}")
+        
+        # NOTE: Agno's remove_content method by default takes 'content_id'. 
+        # To delete by metadata filter (like 'batch_id'), you need to explicitly search 
+        # for them first and use their specific IDs for deletion.
+        
+        # 1. Search for all contents matching the batch_id filter
+        # NOTE: Filter functionality needs Agno/PgVector version that supports metadata filtering.
+        try:
+            contents_to_delete = knowledge.get_content(filters={"batch_id": batch_run_id})
+            
+            if contents_to_delete:
+                content_ids = [content.id for content in contents_to_delete]
+                print(f"Found {len(content_ids)} items to delete.")
+                
+                # 2. Delete found items one by one or in a batch if Agno API supports it
+                for c_id in content_ids:
+                     knowledge.remove_content_by_id(c_id)
+                print("Cleanup complete.")
+            else:
+                print("No items found to delete (perhaps an error occurred early).")
+        
+        except Exception as filter_error:
+            print(f"Could not use metadata filter for cleanup. Check Agno version/DB support: {filter_error}")
 
+    # Return the generated questions to the user/frontend
     return final_questions
