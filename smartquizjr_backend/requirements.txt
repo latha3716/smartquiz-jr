@@ -35,7 +35,6 @@ openai==2.8.1
 packaging==25.0
 pgvector==0.4.1
 psycopg==3.2.12
-psycopg_c
 psycopg-binary==3.2.12
 psycopg2-binary==2.9.11
 pydantic==2.12.3
