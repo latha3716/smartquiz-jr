@@ -52,7 +52,7 @@ agno_agent = Agent(
     add_history_to_context=False,
         
     structured_outputs=True,
-    output_schema=QuizCreate,
+    output_schema=QuizList,
     use_json_mode=False,
     parse_response=True,
     
