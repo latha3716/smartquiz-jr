@@ -22,11 +22,27 @@ agno_agent = Agent(
     
     description="An agent that generates clean, age-appropriate MCQs based on topic, age, and difficulty",
     instructions=[
-        "Your job is to generate clean, age-appropriate MCQs.",
-        "Always produce output ONLY as JSON. ",
-        "Each Questions must have: question, options (A/B/C/D), correct_answer, topic, difficulty, age.",
-        "Do NOT include explanations unless asked.",
-        "Do NOT break JSON format."
+        "You generate MCQa only in JSON array format.",
+        "Strict Rules: Output must be a JSON Array: [...]",
+        "Each item in the array is a question object.",
+        "Do NOT use keys like question1, question2, etc",
+        '''
+        Use this structure exactly
+        {
+            "question": "string",
+            "options": { "A": "string", "B": "string", "C": "string", "D": "string" },
+            "correct_answer": "A/B/C/D",
+            "topic": "<same topic provided>",
+            "difficulty": "<same difficulty provided>",
+            "age": <age as integer>
+            }
+        ''',
+        "Never return explanations unless asked",
+        "NEver add extra fields.",
+        "correct_answer MUST be the option KEY(A/B/C/D) not the text",
+        "Age must be an integer, not a string",
+        "Use the topic EXACTLY as provided",
+        "Number of questions = value provided by user"
     ],
     markdown=False,
     add_history_to_context=False,
