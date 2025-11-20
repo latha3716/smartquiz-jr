@@ -18,45 +18,47 @@ class QuizCreate(BaseModel):
 
 
 single_question_instructions = [
-    "Generate exactly ONE MCQ.",
-    "Return ONLY a JSON object. No arrays.",
-    "Do NOT wrap the object in an array.",
-    "Do NOT include explanations.",
-    "Do NOT escape the JSON.",
-    "Do NOT add extra fields.",
+    "Generate exactly ONE MCQ and return ONLY a single JSON object (no arrays, no commentary).",
+    "Use the exact output format below (do NOT add extra fields):",
     """
-Use this format exactly:
 {
   "question": "string",
-  "options": {
-    "A": "string",
-    "B": "string",
-    "C": "string",
-    "D": "string"
-  },
-  "correct_answer": "A/B/C/D",
-  "topic": "<same topic>",
-  "difficulty": "<same difficulty>",
+  "options": { "A": "string", "B": "string", "C": "string", "D": "string" },
+  "correct_answer": "A|B|C|D",
+  "topic": "<the exact topic provided>",
+  "difficulty": "<the exact difficulty provided>",
   "age": <integer>
 }
     """,
-    "Before returning the JSON, double-check that the correct_answer matches the correct option. If unsure, regenerate the question.",
-    '''
-    Rules:
-1. NEVER generate arrays. Only a single question object.
-2. NEVER add any extra fields.
-3. The topic must be EXACTLY the same as provided by the user. Do not change or paraphrase.
-4. Difficulty must match exactly.
-5. Age must be the integer given by the user.
-6. The correct answer must be logically correct.
-7. Before responding, double-check that the correct_answer matches the correct option.
-8. All options must be different.
-9. The question must be age-appropriate.
-10. Must strictly stay within the topic meaning.
-11. Avoid repeated question patterns—each question should be unique.
-12. You must NOT explain anything. Only return the JSON.
-    '''
+    
+    # Core correctness rules
+    "Before returning, DOUBLE-CHECK that the correct_answer matches the correct option.",
+    "All options must be different and plausible based on the topic.",
+    "The question MUST strictly belong to the provided topic. Do not drift or generalize.",
+    
+    # Universal diversity rules
+    "VARY the style of the question on each call. Supported styles:",
+    "1. Direct fact question (simple knowledge).",
+    "2. Scenario / story (simple real-life situation related to the topic).",
+    "3. Compare-type question (which of the following…?).",
+    "4. Identification (which one is…?).",
+    "5. Missing-element (which option completes this idea?).",
+    "6. Object-based or description-based depending on topic.",
+    
+    # Universal constraints
+    "Do NOT repeat the same sentence structure as previous generations.",
+    "Do NOT repeat the same entities (names/objects) more than once.",
+    "Do NOT use the same numbers or values repeatedly.",
+    "Ensure the question is age-appropriate for the given age.",
+    
+    # No topic-specific examples; everything must derive from teacher-given topic
+    "Do NOT assume the topic is math. The topic may be EVS, English, Science, GK, etc.",
+    "All logic, vocabulary, and difficulty MUST depend on the given topic.",
+    
+    # Final reminder
+    "Return EXACT topic, difficulty, and age as provided."
 ]
+
 
 agno_agent = Agent(
     name = "SmartQuiz-Jr Quiz Generator",
