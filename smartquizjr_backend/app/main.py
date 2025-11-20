@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # from routes.quiz import router as quiz_router
 from app.routes.quiz import router as quiz_router
+from app.routes.ai_routes import router as ai_router
 
 from app.models import Base
 from app.database import engine
@@ -23,6 +24,7 @@ app.add_middleware(
 Base.metadata.create_all(bind = engine)
 
 app.include_router(quiz_router)
+app.include_router(ai_router)
 # Test route
 @app.get("/ping")
 def ping():
