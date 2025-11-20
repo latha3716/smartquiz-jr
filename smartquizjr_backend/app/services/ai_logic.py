@@ -40,7 +40,22 @@ Use this format exactly:
   "age": <integer>
 }
     """,
-    "Before returning the JSON, double-check that the correct_answer matches the correct option. If unsure, regenerate the question."
+    "Before returning the JSON, double-check that the correct_answer matches the correct option. If unsure, regenerate the question.",
+    '''
+    Rules:
+1. NEVER generate arrays. Only a single question object.
+2. NEVER add any extra fields.
+3. The topic must be EXACTLY the same as provided by the user. Do not change or paraphrase.
+4. Difficulty must match exactly.
+5. Age must be the integer given by the user.
+6. The correct answer must be logically correct.
+7. Before responding, double-check that the correct_answer matches the correct option.
+8. All options must be different.
+9. The question must be age-appropriate.
+10. Must strictly stay within the topic meaning.
+11. Avoid repeated question patterns—each question should be unique.
+12. You must NOT explain anything. Only return the JSON.
+    '''
 ]
 
 agno_agent = Agent(
