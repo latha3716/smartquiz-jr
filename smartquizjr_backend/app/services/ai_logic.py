@@ -62,7 +62,8 @@ single_question_instructions = [
 
 agno_agent = Agent(
     name = "SmartQuiz-Jr Quiz Generator",
-    model = os.environ.get("GROQ_MODEL"),
+    # model = os.environ.get("GROQ_MODEL"),
+    model = os.environ.get("OPENAI_MODEL"),
     
     description="An agent that generates clean, age-appropriate MCQs based on topic, age, and difficulty",
     instructions=single_question_instructions,
