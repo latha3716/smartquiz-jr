@@ -79,5 +79,5 @@ class AIRequest(BaseModel):
     teacher_id: int
     topic: str
     age: int
-    difficulty: Literal["easy, medium, hard"]
+    difficulty: Literal["easy", "medium", "hard"]
     questions: Optional[int] = 10
