@@ -51,10 +51,10 @@ agno_agent = Agent(
     markdown=False,
     add_history_to_context=False,
         
-    structured_outputs=True,
-    output_schema=QuizList,
+    structured_outputs=False,
     use_json_mode=False,
-    parse_response=True,
+    parse_response=False,
+    output_schema=QuizList,
     
 )
 def create_questions(topic: str, age: int, difficulty: str = "easy", questions: int = 10):
