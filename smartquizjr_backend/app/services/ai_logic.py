@@ -17,6 +17,9 @@ class QuizCreate(BaseModel):
     topic: str
     difficulty: str
 
+class QuizList(BaseModel):
+    __root__: List[QuizCreate]
+
 agno_agent = Agent(
     name = "SmartQuiz-Jr Quiz Generator",
     model = os.environ.get("GROQ_MODEL"),
@@ -49,7 +52,7 @@ agno_agent = Agent(
     add_history_to_context=False,
         
     structured_outputs=True,
-    output_schema=List[QuizCreate],
+    output_schema=QuizCreate,
     use_json_mode=True,
     parse_response=True,
     
