@@ -10,7 +10,7 @@ router = APIRouter(
     tags=["AI Logic"]
 )
 
-@router.get("/create", status_code=201)
+@router.post("/create", status_code=201)
 async def create_AI_questions_with_topic(ai_request: AIRequest, db: Session = Depends(get_db)):
     return create_questions(ai_request.topic, ai_request.age, ai_request.difficulty, ai_request.questions)
     
