@@ -39,7 +39,8 @@ Use this format exactly:
   "difficulty": "<same difficulty>",
   "age": <integer>
 }
-    """
+    """,
+    "Before returning the JSON, double-check that the correct_answer matches the correct option. If unsure, regenerate the question."
 ]
 
 agno_agent = Agent(
@@ -58,15 +59,10 @@ agno_agent = Agent(
     
 )
 def clean_json(text: str):
-    """
-    Removes markdown, backticks, and extracts only the JSON object.
-    """
+    
     text = text.strip()
-
-    # Remove ```json and ``` wrappers
     text = re.sub(r"```json|```", "", text).strip()
-
-    # Extract { ... }
+    
     match = re.search(r"{[\s\S]*}", text)
     if not match:
         raise ValueError("No valid JSON object found.")
