@@ -1,5 +1,6 @@
 #app/models.py
 from sqlalchemy import Column, Integer, String, JSON, Float, DateTime, func, Enum, Index
+from sqlalchemy import JSON
 from sqlalchemy.orm import declarative_base
 import enum
 
@@ -59,3 +60,11 @@ class Participant(Base):
     username = Column(String, nullable=False)
     room_code = Column(String, nullable=False, index=True)
     joined_at = Column(DateTime(timezone=True), server_default=func.now())
+    
+    
+class Rag_temp_content(Base):
+    __tablename__ = "RAGTempContent"
+    
+    id = Column(Integer, primary_key=True)
+    uuid_id = Column(String, nullable=False)
+    content = Column(String)

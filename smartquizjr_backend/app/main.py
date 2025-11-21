@@ -22,9 +22,9 @@ app.add_middleware(
     allow_methods = ["*"],
     allow_headers = ["*"],
 )
-app.on_event("startup")
-def startup_event():
-    init_vector_db()
+# app.on_event("startup")
+# def startup_event():
+#     init_vector_db()
 Base.metadata.create_all(bind = engine)
 
 app.include_router(quiz_router)

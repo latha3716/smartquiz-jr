@@ -10,9 +10,8 @@ from pydantic import BaseModel
 from typing import Dict
 
 import uuid
-from agno.knowledge.knowledge import Knowledge
-from agno.vectordb.pgvector import PgVector
-
+from app.models import Rag_temp_content
+from sqlalchemy.orm import Session
 class QuizCreate(BaseModel):
     question: str
     options: Dict[str, str]
@@ -26,20 +25,20 @@ single_question_instructions = [
     "Generate exactly ONE MCQ and return ONLY a single JSON object (no arrays, no commentary).",
     "Use the exact output format below (do NOT add extra fields):",
     """
-{
-  "question": "string",
-  "options": { "A": "string", "B": "string", "C": "string", "D": "string" },
-  "correct_answer": "A|B|C|D",
-  "topic": "<the exact topic provided>",
-  "difficulty": "<the exact difficulty provided>",
-  "age": <integer>
-}
+    {
+        "question": "string",
+        "options": { "A": "string", "B": "string", "C": "string", "D": "string" },
+        "correct_answer": "A|B|C|D",
+        "topic": "<the exact topic provided>",
+        "difficulty": "<the exact difficulty provided>",
+        "age": <integer>
+    }
     """,
     
     # Knowledge-base / RAG rule
-    "Before generating a question, ALWAYS search the provided knowledge base (Questions_By_LLM).",
+    "Before generating a question, ALWAYS search the previous questions provided",
     "If ANY question is identical or similar in meaning, structure, or numbers, you MUST generate a completely different question.",
-    "Your output must always be fully unique compared to everything in Questions_By_LLM.",
+    "Your output must always be fully unique.",
     
     # Core correctness rules
     "Before returning, DOUBLE-CHECK that the correct_answer matches the correct option.",
@@ -69,21 +68,10 @@ single_question_instructions = [
     "Return EXACT topic, difficulty, and age as provided."
 ]
 
-knowledge = Knowledge(
-    name="SmartQuiz-jr Vector DB",
-    vector_db= PgVector(
-        table_name="Questions_By_LLM",
-        db_url=os.environ.get("PG_VECTOR_URI")
-    )
-)
-
 agno_agent = Agent(
     name = "SmartQuiz-Jr Quiz Generator",
     # model = os.environ.get("GROQ_MODEL"),
     model = os.environ.get("OPENAI_MODEL"),
-    knowledge=knowledge,
-    search_knowledge=True,
-    add_knowledge_to_context=True,
     
     description="An agent that generates clean, age-appropriate MCQs based on topic, age, and difficulty",
     instructions=single_question_instructions,
@@ -96,6 +84,27 @@ agno_agent = Agent(
     output_schema=QuizCreate,
     
 )
+
+validate_agent = Agent(
+    name = "SmartQuiz-Jr Quiz Question Validator",
+    model = os.environ.get("OPENAI_MODEL"),
+    
+    description="An agent that verfies the preivous questions and generate unique question which is different from the previous question and appropriate to the rules like topic, age, and difficulty",
+    instructions=[
+        "verify the previous questions from the latest question",
+        "the questions should not be repetitive",
+        "genenrate a new question which is different from the previous questions but come under the same topic, age, and difficulty",
+    ] + (single_question_instructions),
+    
+    markdown=False,
+    add_history_to_context=False,
+        
+    structured_outputs=False,
+    use_json_mode=False,
+    parse_response=False,
+    output_schema=QuizCreate, 
+)
+
 def clean_json(text: str):
     
     text = text.strip()
@@ -121,16 +130,36 @@ def generate_single_question(topic: str, age: int, difficulty: str):
     cleaned = clean_json(response.content)
     return cleaned
 
-async def create_questions(topic: str, age: int, difficulty: str, count: int):
-    final_questions = []
+async def validate_question(db: Session, uuid_id: str):
+    questions = db.query(Rag_temp_content).filter_by(uuid_id = uuid_id).all()
+    previous = [question.content for question in questions]
+    prompt = (
+        f"Previous Questions: \n{json.dumps(previous, indent=2)}"
+    )
+    response: RunOutput = validate_agent.run(prompt, stream = False)
+    cleaned = clean_json(response.content)
+    return cleaned
 
+async def create_questions(topic: str, age: int, difficulty: str, count: int, db: Session):
+    final_questions = []
+    session_uuid = str(uuid.uuid4())
+    
     for _ in range(count):
-        q = generate_single_question(topic, age, difficulty)
-        # knowledge.add_content(
-        #     text_content=json.dumps(q)
-        # )
-        await knowledge.add_content_async(text_content=json.dumps(q))
-        final_questions.append(q)
+        raw_q = generate_single_question(topic, age, difficulty)
         
+        db.add(Rag_temp_content(uuid_id = session_uuid, content = raw_q))
+        db.commit()
+        
+        validated = await validate_question(db, session_uuid)
+        
+        db.add(Rag_temp_content(uuid_id = session_uuid, content = validated))
+        db.commit()
+        
+        final_questions.append(validated)
+    
+    db.query(Rag_temp_content).filter_by(uuid_id=session_uuid).delete()
+    db.commit()
 
     return final_questions
+
+
