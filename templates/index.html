@@ -1,5 +1,7 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
@@ -8,9 +10,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Quiz</title>
   <link rel="stylesheet" href="../static/css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai&family=Fredoka+One&family=Poppins&family=Quicksand&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Baloo+Bhai&family=Fredoka+One&family=Poppins&family=Quicksand&display=swap"
+    rel="stylesheet">
 
 </head>
+
 <body>
   <div class="card">
     <div class="logo">SmartQuiz Jr</div>
@@ -20,5 +25,24 @@
     </a>
     <div class="footer">Made with ❤️ by Chandan</div>
   </div>
+  <script>
+    // Add to your JS file or <script> tag
+    document.querySelector('.join-btn').addEventListener('click', function (e) {
+      // Trigger bloom animation
+      this.classList.add('blooming');
+
+      // Haptic feedback (mobile only)
+      if (navigator.vibrate) {
+        navigator.vibrate(10);
+      }
+
+      // Remove class after animation completes
+      setTimeout(() => {
+        this.classList.remove('blooming');
+      }, 350);
+    });
+
+  </script>
 </body>
+
 </html>

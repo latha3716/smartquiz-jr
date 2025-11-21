@@ -1,163 +1,597 @@
 /* join.css */
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai&family=Fredoka+One&family=Poppins&family=Quicksand&display=swap');
+:root {
+  /* Lumen Color Palette */
+  --lumen-amber: #FFB86B;
+  --verde-calm: #4FD1A9;
+  --sky-chalk: #7ECFF1;
+
+  /* Neutrals */
+  --dark-text: #1F2937;
+  --mid-text: #4B5563;
+  --light-text: #6B7280;
+  --surface: #FBFDFF;
+  --frost: rgba(255, 255, 255, 0.66);
+  --input-bg: #F9FAFB;
+
+  /* Semantic Colors */
+  --success: #29C36A;
+  --warning: #FF9A52;
+  --error: #FF5A6C;
+
+  /* Shape & Radius System */
+  --radius-friendly: 18px;
+  --radius-soft: 26px;
+
+  /* Motion System */
+  --duration-micro: 140ms;
+  --duration-small: 220ms;
+  --duration-medium: 350ms;
+  --duration-page: 300ms;
+  --easing-soft-spring: cubic-bezier(.2, .9, .2, 1);
+  --easing-gentle: cubic-bezier(.4, 0, .2, 1);
+
+  /* Typography */
+  --font-kid-heading: 'Baloo 2', 'Fredoka One', 'Baloo Bhai', cursive;
+  --font-kid-body: 'Poppins', 'Quicksand', sans-serif;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-micro: 0ms;
+    --duration-small: 0ms;
+    --duration-medium: 0ms;
+    --duration-page: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========================================
+   2. Base & Reset
+   ======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
-  background: #F5F7FF; /* Magic Mist */
+  background: linear-gradient(135deg, #FBFDFF 0%, #F0F9FF 100%);
   margin: 0;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Poppins', 'Quicksand', sans-serif;
-  color: #1A237E;
+  font-family: var(--font-kid-body);
+  color: var(--dark-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 1rem;
 }
 
-.card {
-  background: #FFFFFF; /* Scroll White */
-  padding: 2.5rem 2rem 1.5rem 2rem;
-  border-radius: 24px;
-  box-shadow: 0 4px 20px rgba(125, 140, 255, 0.2); /* soft magic indigo glow */
+/* ========================================
+   3. Main Card Component
+   ======================================== */
+main.card {
+  background: #FFFFFF;
+  padding: 3rem 2.5rem 2rem 2.5rem;
+  border-radius: var(--radius-soft);
+  box-shadow: 
+    0 4px 6px rgba(79, 209, 169, 0.08),
+    0 12px 32px rgba(126, 207, 241, 0.12),
+    0 2px 4px rgba(255, 184, 107, 0.06);
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 300px;
-  max-width: 90vw;
-  width: 360px;
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  animation: cardEnter var(--duration-page) var(--easing-soft-spring) forwards;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
-.logo {
-  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
-  font-size: 2.1rem;
-  font-weight: 700;
-  color: #FFB703; /* Golden Sparkle */
-  letter-spacing: 1px;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  user-select: none;
-  text-shadow: 0 0 6px #FFB703AA;
-  animation: glow 3s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
+/* Card entrance animation */
+@keyframes cardEnter {
   from {
-    text-shadow: 0 0 6px #FFB703AA;
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
   }
   to {
-    text-shadow: 0 0 12px #FFB703FF;
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
-.input-group {
-  width: 100%;
-  margin-bottom: 1rem;
+/* Decorative top accent stripe */
+main.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--lumen-amber) 0%, var(--verde-calm) 50%, var(--sky-chalk) 100%);
+  border-radius: var(--radius-soft) var(--radius-soft) 0 0;
+  opacity: 0.7;
 }
 
+/* ========================================
+   4. Logo Component
+   ======================================== */
+.logo {
+  font-family: var(--font-kid-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--lumen-amber) 0%, #FFA940 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
+  margin-bottom: 2rem;
+  text-align: center;
+  position: relative;
+  user-select: none;
+  animation: logoGlow 3s ease-in-out infinite;
+}
+
+/* Subtle glow animation */
+@keyframes logoGlow {
+  0%, 100% {
+    filter: drop-shadow(0 2px 8px rgba(255, 184, 107, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 2px 12px rgba(255, 184, 107, 0.5));
+  }
+}
+
+/* ========================================
+   5. Form Structure
+   ======================================== */
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ========================================
+   6. Input Groups
+   ======================================== */
+.input-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Input Labels */
 .input-label {
   display: flex;
   align-items: center;
-  font-family: 'Baloo Bhai', cursive;
-  font-size: 1.05rem;
-  margin-bottom: 6px;
-  color: #FFB703; /* golden sparkle */
+  gap: 0.5rem;
+  font-family: var(--font-kid-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--dark-text);
   user-select: none;
 }
 
+/* Emoji Icons with subtle bounce */
 .input-label span {
-  font-size: 1.4em;
-  margin-right: 8px;
-  /* subtle bounce animation on icons */
+  font-size: 1.5em;
   display: inline-block;
-  animation: bounceIcon 2.5s ease-in-out infinite;
+  animation: iconBreathe 4s ease-in-out infinite;
 }
 
-@keyframes bounceIcon {
+@keyframes iconBreathe {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
   50% {
-    transform: translateY(-6px);
+    transform: translateY(-3px) scale(1.05);
   }
 }
 
+/* Input Fields */
 input[type="text"] {
   width: 100%;
-  padding: 0.75rem 1rem;
-  font-family: 'Poppins', 'Quicksand', sans-serif;
+  padding: 0.9rem 1.1rem;
+  font-family: var(--font-kid-body);
   font-size: 1rem;
-  border: 1.5px solid #BBDEFB;
-  border-radius: 18px;
+  color: var(--dark-text);
+  background: var(--input-bg);
+  border: 2px solid transparent;
+  border-radius: var(--radius-friendly);
   outline: none;
-  transition: border 0.2s;
-  background: #F6FBFF;
-  box-shadow: 0 0 6px #7D8CFF33;
+  transition: 
+    border-color var(--duration-small) var(--easing-gentle),
+    box-shadow var(--duration-small) var(--easing-gentle),
+    background-color var(--duration-small) var(--easing-gentle);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
+/* Input placeholder styling */
+input[type="text"]::placeholder {
+  color: var(--light-text);
+  opacity: 0.6;
+}
+
+/* Input hover state */
+input[type="text"]:hover {
+  background: #FFFFFF;
+  border-color: var(--sky-chalk);
+  box-shadow: 0 2px 8px rgba(126, 207, 241, 0.15);
+}
+
+/* Input focus state - Lumen Signal */
 input[type="text"]:focus {
-  border: 1.5px solid #7D8CFF; /* Magic Indigo */
-  box-shadow: 0 0 12px #7D8CFFAA;
+  background: #FFFFFF;
+  border-color: var(--lumen-amber);
+  box-shadow: 
+    0 0 0 3px rgba(255, 184, 107, 0.15),
+    0 2px 8px rgba(255, 184, 107, 0.2);
 }
 
+/* Input validation states */
+input[type="text"]:invalid:not(:placeholder-shown) {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(255, 90, 108, 0.1);
+}
+
+input[type="text"]:valid:not(:placeholder-shown) {
+  border-color: var(--verde-calm);
+  box-shadow: 0 0 0 3px rgba(79, 209, 169, 0.1);
+}
+
+/* ========================================
+   7. Submit Button (Lumen Bloom)
+   ======================================== */
 .join-btn {
   width: 100%;
-  padding: 0.9rem;
-  background: linear-gradient(90deg, #7D8CFF 60%, #A0A9FF 100%); /* Magic Indigo gradient */
-  color: #fff;
-  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
-  font-size: 1.18rem;
+  padding: 1.1rem 2rem;
+  background: var(--lumen-amber);
+  color: #FFFFFF;
+  font-family: var(--font-kid-heading);
+  font-size: 1.25rem;
   font-weight: 700;
   border: none;
-  border-radius: 28px;
-  margin-top: 0.5rem;
+  border-radius: var(--radius-soft);
+  margin-top: 0.75rem;
   cursor: pointer;
-  box-shadow: 0 5px 15px rgba(125, 140, 255, 0.6);
-  transition: background 0.3s, transform 0.16s;
-  user-select: none;
+  box-shadow: 
+    0 4px 12px rgba(255, 184, 107, 0.35),
+    0 2px 4px rgba(255, 184, 107, 0.2);
+  transition: 
+    transform var(--duration-micro) var(--easing-soft-spring),
+    box-shadow var(--duration-small) var(--easing-gentle);
   position: relative;
   overflow: hidden;
+  isolation: isolate;
+  will-change: transform;
+  user-select: none;
 }
 
+/* Lumen Bloom: Radial glow layer */
+.join-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Sparkle indicator */
 .join-btn::after {
   content: '✨';
   position: absolute;
-  left: 10px;
+  right: 1.5rem;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.3rem;
-  opacity: 0;
-  animation: sparkle 2.5s infinite;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  animation: sparkleFloat 2.5s ease-in-out infinite;
   pointer-events: none;
 }
 
-@keyframes sparkle {
-  0%, 100% { opacity: 0; transform: translateY(-50%) scale(0.5); }
-  50% { opacity: 1; transform: translateY(-60%) scale(1); }
+@keyframes sparkleFloat {
+  0%, 100% {
+    transform: translateY(-50%) rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-55%) rotate(10deg) scale(1.1);
+    opacity: 1;
+  }
 }
 
+/* Button hover state */
 .join-btn:hover {
-  background: linear-gradient(95deg, #676FDB 60%, #7D8CFF 100%);
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 8px 20px rgba(125, 140, 255, 0.8);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 
+    0 6px 20px rgba(255, 184, 107, 0.45),
+    0 3px 8px rgba(255, 184, 107, 0.3);
 }
 
+/* Button focus state - accessibility */
+.join-btn:focus-visible {
+  outline: 3px solid var(--lumen-amber);
+  outline-offset: 4px;
+  box-shadow: 
+    0 0 0 4px rgba(255, 184, 107, 0.2),
+    0 6px 20px rgba(255, 184, 107, 0.45);
+}
+
+/* Button active state - compression */
+.join-btn:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 80ms;
+}
+
+/* Lumen Bloom animation trigger */
+@keyframes lumenBloom {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    width: 400px;
+    height: 400px;
+    opacity: 0;
+  }
+}
+
+.join-btn.blooming::before {
+  animation: lumenBloom var(--duration-medium) var(--easing-soft-spring) forwards;
+}
+
+/* Button disabled state */
+.join-btn:disabled {
+  background: var(--light-text);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.5;
+}
+
+.join-btn:disabled::after {
+  display: none;
+}
+
+/* ========================================
+   8. Footer Component
+   ======================================== */
 .footer {
-  margin-top: 1.8rem;
-  font-family: 'Poppins', 'Quicksand', sans-serif;
-  font-size: 0.99rem;
-  color: #90A4AE;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  font-family: var(--font-kid-body);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--mid-text);
   text-align: center;
   user-select: none;
+  opacity: 0.7;
+  border-top: 1px solid rgba(126, 207, 241, 0.15);
+  width: 100%;
 }
 
+/* ========================================
+   9. Responsive Design
+   ======================================== */
 @media (max-width: 490px) {
-  .card {
-    width: 98vw;
-    padding: 1.5rem 0.7rem 1.3rem 0.7rem;
+  main.card {
+    padding: 2.5rem 1.75rem 1.75rem 1.75rem;
+    max-width: 95vw;
   }
+
   .logo {
-    font-size: 1.45rem;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
   }
+
+  form {
+    gap: 1rem;
+  }
+
+  .input-label {
+    font-size: 0.95rem;
+  }
+
+  .input-label span {
+    font-size: 1.3em;
+  }
+
+  input[type="text"] {
+    padding: 0.85rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .join-btn {
+    font-size: 1.1rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .join-btn::after {
+    right: 1.2rem;
+    font-size: 1.1rem;
+  }
+
+  .footer {
+    font-size: 0.85rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+  }
+}
+
+@media (max-width: 360px) {
+  main.card {
+    padding: 2rem 1.25rem 1.5rem 1.25rem;
+  }
+
+  .logo {
+    font-size: 1.75rem;
+  }
+
+  .input-label {
+    font-size: 0.9rem;
+  }
+
+  input[type="text"] {
+    padding: 0.75rem 0.9rem;
+    font-size: 0.9rem;
+  }
+
   .join-btn {
     font-size: 1rem;
-    padding: 0.85rem;
+    padding: 0.9rem 1.25rem;
+  }
+}
+
+/* ========================================
+   10. Loading State (for form submission)
+   ======================================== */
+.join-btn.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.join-btn.loading::after {
+  content: '⏳';
+  animation: loadingSpin 1s linear infinite;
+}
+
+@keyframes loadingSpin {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+/* ========================================
+   11. Accessibility Enhancements
+   ======================================== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  main.card {
+    border: 2px solid var(--dark-text);
+  }
+
+  input[type="text"] {
+    border-color: var(--dark-text);
+  }
+
+  .join-btn {
+    border: 2px solid var(--dark-text);
+  }
+}
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--lumen-amber);
+  outline-offset: 2px;
+}
+
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ========================================
+   12. Performance Optimizations
+   ======================================== */
+
+/* GPU acceleration */
+.join-btn,
+main.card,
+input[type="text"] {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ========================================
+   13. Error/Success Toast Styles (optional)
+   ======================================== */
+.toast {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-friendly);
+  font-family: var(--font-kid-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  animation: toastSlideIn 0.3s var(--easing-soft-spring);
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.toast.error {
+  background: var(--error);
+  color: white;
+}
+
+.toast.success {
+  background: var(--verde-calm);
+  color: white;
+}
+
+/* ========================================
+   14. Print Styles
+   ======================================== */
+@media print {
+  body {
+    background: white;
+  }
+
+  main.card {
+    box-shadow: none;
+    border: 1px solid #E5E7EB;
+  }
+
+  .join-btn {
+    background: var(--lumen-amber);
+    box-shadow: none;
   }
 }

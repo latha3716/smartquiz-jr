@@ -1,91 +1,374 @@
 /* styles.css */
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai&family=Fredoka+One&family=Poppins&family=Quicksand&display=swap');
+:root {
+  /* Lumen Color Palette */
+  --lumen-amber: #FFB86B;
+  --verde-calm: #4FD1A9;
+  --sky-chalk: #7ECFF1;
+  
+  /* Neutrals */
+  --dark-text: #1F2937;
+  --mid-text: #4B5563;
+  --surface: #FBFDFF;
+  --frost: rgba(255, 255, 255, 0.66);
+  
+  /* Semantic Colors */
+  --success: #29C36A;
+  --warning: #FF9A52;
+  --error: #FF5A6C;
+  
+  /* Shape & Radius System */
+  --radius-friendly: 18px;
+  --radius-soft: 26px;
+  
+  /* Motion System */
+  --duration-micro: 140ms;
+  --duration-small: 220ms;
+  --duration-medium: 350ms;
+  --duration-page: 300ms;
+  --easing-soft-spring: cubic-bezier(.2, .9, .2, 1);
+  --easing-gentle: cubic-bezier(.4, 0, .2, 1);
+  
+  /* Typography Scale */
+  --font-kid-heading: 'Baloo 2', 'Fredoka One', 'Baloo Bhai', cursive;
+  --font-kid-body: 'Poppins', 'Quicksand', sans-serif;
+  --font-neutral: 'Inter', 'Nunito Sans', sans-serif;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-micro: 0ms;
+    --duration-small: 0ms;
+    --duration-medium: 0ms;
+    --duration-page: 0ms;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========================================
+   2. Base & Reset
+   ======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
-  background: #F5F7FF; /* Magic Mist */
+  background: linear-gradient(135deg, #FBFDFF 0%, #F0F9FF 100%);
   margin: 0;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Poppins', 'Quicksand', sans-serif;
-  color: #1A237E;
+  font-family: var(--font-kid-body);
+  color: var(--dark-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
+/* ========================================
+   3. Card Component
+   ======================================== */
 .card {
-  background: #FFFFFF; /* Scroll White */
-  padding: 2.5rem 2rem 2rem 2rem;
-  border-radius: 24px;
-  box-shadow: 0 4px 20px rgba(125, 140, 255, 0.2); /* soft magic indigo glow */
+  background: #FFFFFF;
+  padding: 3rem 2.5rem 2.5rem 2.5rem;
+  border-radius: var(--radius-soft);
+  box-shadow: 
+    0 4px 6px rgba(79, 209, 169, 0.08),
+    0 12px 32px rgba(126, 207, 241, 0.12),
+    0 2px 4px rgba(255, 184, 107, 0.06);
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 300px;
+  min-width: 320px;
   max-width: 90vw;
-  width: 370px;
+  width: 420px;
+  position: relative;
+  animation: cardEnter var(--duration-page) var(--easing-soft-spring) forwards;
+  transform-origin: center center;
 }
 
+/* Card entrance animation */
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Decorative accent - subtle Lumen touch */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--lumen-amber) 0%, var(--verde-calm) 50%, var(--sky-chalk) 100%);
+  border-radius: var(--radius-soft) var(--radius-soft) 0 0;
+  opacity: 0.6;
+}
+
+/* ========================================
+   4. Logo Component
+   ======================================== */
 .logo {
-  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
-  font-size: 2.4rem;
+  font-family: var(--font-kid-heading);
+  font-size: 2.75rem;
   font-weight: 700;
-  color: #FFB703; /* Golden Sparkle */
-  letter-spacing: 1.5px;
-  margin-bottom: 1.3rem;
+  background: linear-gradient(135deg, var(--lumen-amber) 0%, #FFA940 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
+  margin-bottom: 1rem;
   text-align: center;
+  position: relative;
+  animation: logoGlow 3s ease-in-out infinite;
 }
 
+/* Subtle glow animation for logo */
+@keyframes logoGlow {
+  0%, 100% {
+    filter: drop-shadow(0 2px 8px rgba(255, 184, 107, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 2px 12px rgba(255, 184, 107, 0.5));
+  }
+}
+
+/* ========================================
+   5. Tagline Component
+   ======================================== */
 .tagline {
-  font-family: 'Poppins', 'Quicksand', sans-serif;
-  font-size: 1.12rem;
-  color: #1565C0;
-  margin-bottom: 2.3rem;
+  font-family: var(--font-kid-body);
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--mid-text);
+  margin-bottom: 2rem;
   text-align: center;
+  line-height: 1.7;
+  max-width: 90%;
 }
 
+/* ========================================
+   6. Lumen Bloom Button (Signature Moment)
+   ======================================== */
 .join-btn {
   width: 100%;
-  padding: 1rem;
-  background: linear-gradient(90deg, #7D8CFF 60%, #A0A9FF 100%); /* Magic Indigo */
-  color: #fff;
-  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
-  font-size: 1.2rem;
+  padding: 1.1rem 2rem;
+  background: var(--lumen-amber);
+  color: #FFFFFF;
+  font-family: var(--font-kid-heading);
+  font-size: 1.25rem;
   font-weight: 700;
   border: none;
-  border-radius: 28px; /* rounded like potion bottle */
-  margin-top: 0.4rem;
+  border-radius: var(--radius-soft);
+  margin-top: 0.5rem;
   cursor: pointer;
-  box-shadow: 0 5px 15px rgba(125, 140, 255, 0.6);
-  transition: background 0.3s, transform 0.2s;
+  box-shadow: 
+    0 4px 12px rgba(255, 184, 107, 0.35),
+    0 2px 4px rgba(255, 184, 107, 0.2);
+  transition: 
+    transform var(--duration-micro) var(--easing-soft-spring),
+    box-shadow var(--duration-small) var(--easing-gentle);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  will-change: transform;
 }
 
+/* Lumen Bloom: Radial glow layer */
+.join-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Hover state - gentle lift */
 .join-btn:hover {
-  background: linear-gradient(95deg, #676FDB 60%, #7D8CFF 100%);
-  transform: translateY(-3px) scale(1.05);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 
+    0 6px 20px rgba(255, 184, 107, 0.45),
+    0 3px 8px rgba(255, 184, 107, 0.3);
 }
 
+/* Focus state - accessibility */
+.join-btn:focus-visible {
+  outline: 3px solid var(--lumen-amber);
+  outline-offset: 4px;
+  box-shadow: 
+    0 0 0 4px rgba(255, 184, 107, 0.2),
+    0 6px 20px rgba(255, 184, 107, 0.45);
+}
+
+/* Active state - Lumen Bloom trigger */
+.join-btn:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 80ms;
+}
+
+/* Lumen Bloom Animation */
+@keyframes lumenBloom {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    width: 400px;
+    height: 400px;
+    opacity: 0;
+  }
+}
+
+.join-btn.blooming::before {
+  animation: lumenBloom var(--duration-medium) var(--easing-soft-spring) forwards;
+}
+
+/* ========================================
+   7. Footer Component
+   ======================================== */
 .footer {
   margin-top: 2.5rem;
-  font-family: 'Poppins', 'Quicksand', sans-serif;
-  font-size: 1rem;
-  color: #90A4AE;
+  font-family: var(--font-kid-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--mid-text);
   text-align: center;
   user-select: none;
+  opacity: 0.7;
 }
 
+/* ========================================
+   8. Responsive Design
+   ======================================== */
 @media (max-width: 490px) {
   .card {
-    width: 97vw;
-    padding: 1.4rem 1rem 1.3rem 1rem;
+    width: 95vw;
+    padding: 2rem 1.5rem 1.8rem 1.5rem;
+    min-width: unset;
   }
+  
   .logo {
-    font-size: 1.7rem;
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
   }
+  
   .tagline {
     font-size: 1rem;
+    margin-bottom: 1.5rem;
   }
+  
   .join-btn {
-    font-size: 1.05rem;
-    padding: 0.85rem;
+    font-size: 1.1rem;
+    padding: 1rem 1.5rem;
   }
+  
+  .footer {
+    font-size: 0.875rem;
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .card {
+    padding: 1.5rem 1.25rem;
+  }
+  
+  .logo {
+    font-size: 1.75rem;
+  }
+  
+  .tagline {
+    font-size: 0.95rem;
+  }
+  
+  .join-btn {
+    font-size: 1rem;
+    padding: 0.9rem 1.25rem;
+  }
+}
+
+/* ========================================
+   9. Accessibility Enhancements
+   ======================================== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .card {
+    border: 2px solid var(--dark-text);
+  }
+  
+  .join-btn {
+    border: 2px solid var(--dark-text);
+  }
+}
+
+/* ========================================
+   10. Performance Optimizations
+   ======================================== */
+
+/* GPU acceleration hints */
+.join-btn,
+.card {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ========================================
+   11. Utility Classes (for future use)
+   ======================================== */
+
+/* Lumen Accent Classes */
+.lumen-accent {
+  color: var(--lumen-amber);
+}
+
+.verde-accent {
+  color: var(--verde-calm);
+}
+
+.sky-accent {
+  color: var(--sky-chalk);
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
