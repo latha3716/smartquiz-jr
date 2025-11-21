@@ -1,163 +1,664 @@
 /* teacher_start.css */
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai&family=Fredoka+One&family=Poppins&family=Quicksand&display=swap');
+:root {
+  /* Lumen Color Palette */
+  --lumen-amber: #FFB86B;
+  --verde-calm: #4FD1A9;
+  --sky-chalk: #7ECFF1;
+
+  /* Neutrals */
+  --dark-text: #1F2937;
+  --mid-text: #4B5563;
+  --light-text: #6B7280;
+  --surface: #FBFDFF;
+  --input-bg: #F9FAFB;
+
+  /* Semantic */
+  --success: #29C36A;
+  --warning: #FF9A52;
+  --info: #7ECFF1;
+
+  /* Shape System */
+  --radius-friendly: 18px;
+  --radius-soft: 26px;
+
+  /* Motion System */
+  --duration-micro: 140ms;
+  --duration-small: 220ms;
+  --duration-medium: 350ms;
+  --easing-soft-spring: cubic-bezier(.2, .9, .2, 1);
+  --easing-gentle: cubic-bezier(.4, 0, .2, 1);
+
+  /* Typography */
+  --font-kid-heading: 'Baloo 2', 'Fredoka One', 'Baloo Bhai', cursive;
+  --font-neutral: 'Inter', 'Nunito Sans', 'Poppins', sans-serif;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-micro: 0ms;
+    --duration-small: 0ms;
+    --duration-medium: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========================================
+   2. Base Styles
+   ======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
-  background: #F5F7FF; /* Magic Mist */
   margin: 0;
   min-height: 100vh;
-  font-family: 'Poppins', 'Quicksand', sans-serif;
-  color: #1A237E;
+  background: linear-gradient(135deg, #FBFDFF 0%, #F0F9FF 100%);
+  font-family: var(--font-neutral);
+  color: var(--dark-text);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2.5rem 1.5rem;
-  box-sizing: border-box;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Heading */
+/* ========================================
+   3. Main Heading (Room Display)
+   ======================================== */
 h2 {
-  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
-  font-size: 2.2rem;
+  font-family: var(--font-neutral);
+  font-size: 2rem;
   font-weight: 700;
-  color: #FFB703; /* Golden Sparkle */
-  margin-bottom: 1.6rem;
+  color: var(--dark-text);
+  margin-bottom: 2rem;
   text-align: center;
-  letter-spacing: 1.3px;
-  text-shadow: 0 0 10px #FFB703aa;
-  animation: glowHeading 3s ease-in-out infinite alternate;
+  letter-spacing: 0.5px;
+  position: relative;
+  padding-left: 1.5rem;
+  animation: headerFadeIn var(--duration-medium) var(--easing-soft-spring);
 }
 
-@keyframes glowHeading {
+@keyframes headerFadeIn {
   from {
-    text-shadow: 0 0 10px #FFB703aa;
+    opacity: 0;
+    transform: translateY(-10px);
   }
   to {
-    text-shadow: 0 0 20px #FFB703ff;
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* Container for input + button */
-div {
-  display: flex;
-  gap: 0.8rem;
-  margin-bottom: 1.8rem;
-  width: 100%;
-  max-width: 360px;
-  justify-content: center;
+/* Lumen left accent stripe (teacher signature) */
+h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 70%;
+  background: linear-gradient(180deg, var(--lumen-amber) 0%, var(--verde-calm) 100%);
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(255, 184, 107, 0.4);
 }
 
-/* Input style */
-input[type="text"] {
-  flex-grow: 1;
-  padding: 0.85rem 1.1rem;
-  font-family: 'Poppins', 'Quicksand', sans-serif;
+h2 span {
+  color: var(--lumen-amber);
+  font-weight: 800;
+  font-family: var(--font-kid-heading);
+  font-size: 1.1em;
+  letter-spacing: 1.5px;
+  animation: codeGlow 3s ease-in-out infinite;
+}
+
+@keyframes codeGlow {
+  0%, 100% {
+    filter: drop-shadow(0 2px 8px rgba(255, 184, 107, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 2px 14px rgba(255, 184, 107, 0.6));
+  }
+}
+
+/* ========================================
+   4. Button System (Action Hierarchy)
+   ======================================== */
+
+/* Base button styles */
+button {
+  padding: 1rem 2.2rem;
+  font-family: var(--font-neutral);
   font-size: 1rem;
-  border: 1.8px solid #BBDEFB;
-  border-radius: 20px;
-  background: #F6FBFF;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-soft);
+  cursor: pointer;
+  transition: 
+    transform var(--duration-micro) var(--easing-soft-spring),
+    box-shadow var(--duration-small) var(--easing-gentle),
+    background var(--duration-small) var(--easing-gentle);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+button:focus-visible {
+  outline: 3px solid var(--lumen-amber);
+  outline-offset: 4px;
+}
+
+button:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 80ms;
+}
+
+/* Primary action: Create Session (Lumen Amber) */
+#create-session-btn {
+  background: var(--lumen-amber);
+  color: #FFFFFF;
+  font-size: 1.15rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 
+    0 4px 12px rgba(255, 184, 107, 0.35),
+    0 2px 4px rgba(255, 184, 107, 0.2);
+  animation: buttonSlideIn var(--duration-medium) var(--easing-soft-spring) 0.1s backwards;
+}
+
+#create-session-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 6px 20px rgba(255, 184, 107, 0.45),
+    0 3px 8px rgba(255, 184, 107, 0.3);
+}
+
+/* Critical action: Start Quiz (Verde Calm - go signal) */
+#start-btn {
+  background: var(--verde-calm);
+  color: #FFFFFF;
+  font-size: 1.2rem;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 
+    0 4px 12px rgba(79, 209, 169, 0.35),
+    0 2px 4px rgba(79, 209, 169, 0.2);
+  animation: buttonSlideIn var(--duration-medium) var(--easing-soft-spring) 0.3s backwards;
+}
+
+#start-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: var(--success);
+  box-shadow: 
+    0 6px 20px rgba(41, 195, 106, 0.45),
+    0 3px 8px rgba(41, 195, 106, 0.3);
+}
+
+/* Lumen Bloom effect for Start Quiz */
+#start-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+#start-btn.blooming::before {
+  animation: lumenBloom var(--duration-medium) var(--easing-soft-spring);
+}
+
+@keyframes lumenBloom {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    width: 400px;
+    height: 400px;
+    opacity: 0;
+  }
+}
+
+/* Secondary action: Leaderboard (Sky Chalk) */
+#leaderboard-btn {
+  background: var(--sky-chalk);
+  color: #FFFFFF;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 
+    0 4px 12px rgba(126, 207, 241, 0.35),
+    0 2px 4px rgba(126, 207, 241, 0.2);
+  animation: buttonSlideIn var(--duration-medium) var(--easing-soft-spring) 0.5s backwards;
+}
+
+#leaderboard-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 6px 20px rgba(126, 207, 241, 0.45),
+    0 3px 8px rgba(126, 207, 241, 0.3);
+}
+
+@keyframes buttonSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   5. Room Input Container
+   ======================================== */
+div {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 1.5rem;
+  animation: inputFadeIn var(--duration-medium) var(--easing-soft-spring) 0.2s backwards;
+}
+
+@keyframes inputFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Input field */
+input[type="text"] {
+  flex: 1;
+  padding: 0.9rem 1.2rem;
+  font-family: var(--font-neutral);
+  font-size: 1rem;
+  color: var(--dark-text);
+  background: var(--input-bg);
+  border: 2px solid transparent;
+  border-radius: var(--radius-friendly);
   outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 0 6px #7D8CFF33;
+  transition: 
+    border-color var(--duration-small) var(--easing-gentle),
+    box-shadow var(--duration-small) var(--easing-gentle),
+    background var(--duration-small) var(--easing-gentle);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+input[type="text"]::placeholder {
+  color: var(--light-text);
+  opacity: 0.6;
+}
+
+input[type="text"]:hover {
+  background: #FFFFFF;
+  border-color: var(--sky-chalk);
+  box-shadow: 0 2px 8px rgba(126, 207, 241, 0.15);
 }
 
 input[type="text"]:focus {
-  border-color: #7D8CFF; /* Magic Indigo */
-  box-shadow: 0 0 14px #7D8CFFaa;
+  background: #FFFFFF;
+  border-color: var(--lumen-amber);
+  box-shadow: 
+    0 0 0 3px rgba(255, 184, 107, 0.15),
+    0 2px 8px rgba(255, 184, 107, 0.2);
 }
 
-/* Buttons */
-button {
-  padding: 0.95rem 2rem;
-  background: linear-gradient(90deg, #7D8CFF 60%, #A0A9FF 100%);
-  color: white;
-  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
-  font-weight: 700;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 28px;
-  cursor: pointer;
-  box-shadow: 0 6px 20px rgba(125, 140, 255, 0.6);
-  transition: background 0.3s, transform 0.2s ease;
-  user-select: none;
-  position: relative;
-  overflow: hidden;
+/* Go to Room button (small, inline) */
+div button {
+  padding: 0.9rem 1.5rem;
+  background: var(--mid-text);
+  color: #FFFFFF;
+  font-size: 0.95rem;
+  margin-bottom: 0;
+  white-space: nowrap;
+  box-shadow: 
+    0 4px 12px rgba(75, 85, 99, 0.25),
+    0 2px 4px rgba(75, 85, 99, 0.15);
 }
 
-button:hover {
-  background: linear-gradient(95deg, #676FDB 60%, #7D8CFF 100%);
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 26px rgba(125, 140, 255, 0.85);
+div button:hover {
+  background: var(--dark-text);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 6px 16px rgba(31, 41, 55, 0.3),
+    0 3px 8px rgba(31, 41, 55, 0.2);
 }
 
-/* Start button full width style */
-#start-btn {
-  width: 100%;
-  max-width: 360px;
-  margin-bottom: 2.5rem;
-}
-
-/* Subtitle */
+/* ========================================
+   6. Students Section
+   ======================================== */
 h3 {
-  font-family: 'Baloo Bhai', cursive;
-  color: #7D8CFF; /* Magic Indigo */
-  font-weight: 700;
+  font-family: var(--font-neutral);
   font-size: 1.25rem;
-  margin-bottom: 1.2rem;
+  font-weight: 700;
+  color: var(--mid-text);
+  margin-bottom: 1rem;
+  margin-top: 2rem;
   text-align: center;
-  user-select: none;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  animation: sectionFadeIn var(--duration-medium) var(--easing-soft-spring) 0.6s backwards;
 }
 
-/* Students list */
+@keyframes sectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Students count badge */
+h3::after {
+  content: attr(data-count);
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--verde-calm);
+  color: white;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 12px;
+  font-weight: 700;
+  min-width: 30px;
+  text-align: center;
+}
+
+/* ========================================
+   7. Students List
+   ======================================== */
 #students-list {
   list-style: none;
   padding: 0;
-  max-width: 360px;
   width: 100%;
-  color: #4A5D92;
-  font-family: 'Poppins', 'Quicksand', sans-serif;
-  font-weight: 600;
-  border-radius: 18px;
+  max-width: 400px;
+  margin: 0 auto;
+  animation: listFadeIn var(--duration-medium) var(--easing-soft-spring) 0.7s backwards;
+}
+
+@keyframes listFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 #students-list li {
-  background: #F6FBFF;
-  border: 1.5px solid #BBDEFB;
-  border-radius: 18px;
-  padding: 0.7rem 1.2rem;
-  margin-bottom: 0.6rem;
-  user-select: none;
-  box-shadow: 0 2px 6px rgba(125, 140, 255, 0.2);
-  transition: box-shadow 0.3s ease;
+  background: #FFFFFF;
+  border: 2px solid rgba(126, 207, 241, 0.2);
+  border-radius: var(--radius-friendly);
+  padding: 0.85rem 1.25rem;
+  margin-bottom: 0.65rem;
+  font-family: var(--font-neutral);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--dark-text);
+  box-shadow: 0 2px 6px rgba(126, 207, 241, 0.1);
+  transition: 
+    border-color var(--duration-small) var(--easing-gentle),
+    box-shadow var(--duration-small) var(--easing-gentle),
+    transform var(--duration-small) var(--easing-gentle);
+  display: flex;
+  align-items: center;
+  position: relative;
+  animation: studentSlideIn var(--duration-small) var(--easing-soft-spring) backwards;
+}
+
+@keyframes studentSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Student avatar indicator */
+#students-list li::before {
+  content: '👤';
+  margin-right: 0.75rem;
+  font-size: 1.2em;
 }
 
 #students-list li:hover {
-  box-shadow: 0 4px 12px rgba(125, 140, 255, 0.4);
+  border-color: var(--verde-calm);
+  box-shadow: 0 4px 12px rgba(79, 209, 169, 0.2);
+  transform: translateX(4px);
 }
 
-/* Responsive */
-@media (max-width: 490px) {
+/* New student highlight */
+#students-list li.new-student {
+  animation: studentHighlight 0.8s ease;
+}
+
+@keyframes studentHighlight {
+  0%, 100% {
+    background: #FFFFFF;
+  }
+  50% {
+    background: rgba(79, 209, 169, 0.1);
+    border-color: var(--verde-calm);
+  }
+}
+
+/* Empty state */
+#students-list:empty::before {
+  content: 'No students joined yet...';
+  display: block;
+  text-align: center;
+  padding: 2rem;
+  color: var(--light-text);
+  font-style: italic;
+  font-weight: 400;
+  background: rgba(126, 207, 241, 0.05);
+  border-radius: var(--radius-friendly);
+  border: 2px dashed rgba(126, 207, 241, 0.3);
+}
+
+/* ========================================
+   8. Status Indicators
+   ======================================== */
+.status-indicator {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  padding: 0.6rem 1rem;
+  background: var(--verde-calm);
+  color: white;
+  font-family: var(--font-neutral);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(79, 209, 169, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: statusSlideIn 0.3s var(--easing-soft-spring);
+  z-index: 100;
+}
+
+@keyframes statusSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.status-indicator::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ========================================
+   9. Responsive Design
+   ======================================== */
+@media (max-width: 520px) {
   body {
     padding: 1.5rem 1rem;
   }
+
   h2 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+    padding-left: 1.2rem;
   }
+
+  h2::before {
+    width: 4px;
+  }
+
+  button {
+    font-size: 0.95rem;
+    padding: 0.9rem 1.75rem;
+  }
+
+  #create-session-btn,
+  #start-btn,
+  #leaderboard-btn {
+    max-width: 100%;
+  }
+
   div {
     flex-direction: column;
-    gap: 0.7rem;
     max-width: 100%;
+    gap: 0.6rem;
   }
-  input[type="text"] {
+
+  div button {
     width: 100%;
   }
+
+  h3 {
+    font-size: 1.1rem;
+    max-width: 100%;
+  }
+
+  #students-list {
+    max-width: 100%;
+  }
+
+  .status-indicator {
+    top: 1rem;
+    right: 1rem;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.8rem;
+  }
+}
+
+/* ========================================
+   10. Accessibility Enhancements
+   ======================================== */
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
   button {
-    width: 100%;
-    max-width: none;
+    border: 2px solid var(--dark-text);
   }
-  #start-btn {
-    max-width: 100%;
+
+  input[type="text"] {
+    border-color: var(--dark-text);
   }
-  #students-list, #students-list li {
-    max-width: 100%;
+
+  #students-list li {
+    border-color: var(--mid-text);
   }
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ========================================
+   11. Performance Optimizations
+   ======================================== */
+
+/* GPU acceleration */
+button,
+#students-list li,
+h2 {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ========================================
+   12. Utility Classes
+   ======================================== */
+.lumen-accent {
+  color: var(--lumen-amber);
+}
+
+.verde-accent {
+  color: var(--verde-calm);
+}
+
+.sky-accent {
+  color: var(--sky-chalk);
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+[hidden] {
+  display: none !important;
 }
