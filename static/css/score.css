@@ -1,169 +1,684 @@
 /* score.css */
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai&family=Fredoka+One&family=Poppins&family=Quicksand&display=swap');
+:root {
+  /* Lumen Color Palette */
+  --lumen-amber: #FFB86B;
+  --verde-calm: #4FD1A9;
+  --sky-chalk: #7ECFF1;
+
+  /* Neutrals */
+  --dark-text: #1F2937;
+  --mid-text: #4B5563;
+  --light-text: #6B7280;
+  --surface: #FBFDFF;
+
+  /* Semantic */
+  --success: #29C36A;
+  --warning: #FF9A52;
+  --error: #FF5A6C;
+
+  /* Shape System */
+  --radius-friendly: 18px;
+  --radius-soft: 26px;
+
+  /* Motion System */
+  --duration-micro: 140ms;
+  --duration-small: 220ms;
+  --duration-medium: 350ms;
+  --duration-celebration: 600ms;
+  --easing-soft-spring: cubic-bezier(.2, .9, .2, 1);
+  --easing-bounce: cubic-bezier(.68, -.55, .265, 1.55);
+
+  /* Typography */
+  --font-kid-heading: 'Baloo 2', 'Fredoka One', 'Baloo Bhai', cursive;
+  --font-kid-body: 'Poppins', 'Quicksand', sans-serif;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-micro: 0ms;
+    --duration-small: 0ms;
+    --duration-medium: 0ms;
+    --duration-celebration: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========================================
+   2. Base Styles
+   ======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
-  background: #F5F7FF; /* Magic Mist */
-  font-family: 'Poppins', 'Quicksand', sans-serif;
-  color: #1A237E;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FBFDFF 0%, #F0F9FF 100%);
+  font-family: var(--font-kid-body);
+  color: var(--dark-text);
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   align-items: center;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* Header */
+/* Celebratory background particles */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255, 184, 107, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(79, 209, 169, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(126, 207, 241, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+  animation: ambientShift 8s ease-in-out infinite alternate;
+}
+
+@keyframes ambientShift {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.6; }
+}
+
+/* ========================================
+   3. Header Component
+   ======================================== */
 .score-header {
   text-align: center;
-  padding: 2.5rem 1rem 1rem 1rem;
-  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
+  padding: 2.5rem 1rem 1.5rem 1rem;
   user-select: none;
+  animation: headerSlideDown var(--duration-medium) var(--easing-soft-spring);
+}
+
+@keyframes headerSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .score-header .logo {
-  font-size: 2.4rem;
+  font-family: var(--font-kid-heading);
+  font-size: 2.75rem;
   font-weight: 700;
-  color: #FFB703; /* Golden Sparkle */
-  letter-spacing: 1.6px;
-  margin-bottom: 0.25rem;
-  text-shadow: 0 0 8px #FFB703aa;
-  animation: glowLogo 3s ease-in-out infinite alternate;
+  background: linear-gradient(135deg, var(--lumen-amber) 0%, #FFA940 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  animation: logoGlowCelebrate 3s ease-in-out infinite;
 }
 
-@keyframes glowLogo {
-  from {
-    text-shadow: 0 0 8px #FFB703aa;
+@keyframes logoGlowCelebrate {
+  0%, 100% {
+    filter: drop-shadow(0 2px 8px rgba(255, 184, 107, 0.4));
   }
-  to {
-    text-shadow: 0 0 14px #FFB703ff;
+  50% {
+    filter: drop-shadow(0 2px 16px rgba(255, 184, 107, 0.7));
   }
 }
 
 .score-header .tagline {
-  font-size: 1.2rem;
-  color: #1565C0;
+  font-family: var(--font-kid-body);
+  font-size: 1.25rem;
   font-weight: 600;
+  color: var(--mid-text);
   margin-top: 0;
+  animation: taglineFadeIn 0.5s var(--easing-soft-spring) 0.2s backwards;
 }
 
-/* Result card */
+@keyframes taglineFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   4. Result Card Component
+   ======================================== */
 .result-card {
-  background: #FFFFFF; /* Scroll White */
-  max-width: 400px;
-  width: 90vw;
-  margin: 1rem auto 4rem auto;
-  border-radius: 24px;
-  padding: 2rem;
-  box-shadow: 0 6px 24px rgba(125, 140, 255, 0.25);
+  background: #FFFFFF;
+  max-width: 480px;
+  width: 92vw;
+  margin: 1rem auto 3rem auto;
+  border-radius: var(--radius-soft);
+  padding: 2.5rem 2rem 2rem 2rem;
+  box-shadow: 
+    0 4px 6px rgba(79, 209, 169, 0.08),
+    0 12px 32px rgba(126, 207, 241, 0.15),
+    0 2px 4px rgba(255, 184, 107, 0.1);
   text-align: center;
-  font-family: 'Poppins', 'Quicksand', sans-serif;
-  user-select: none;
+  position: relative;
+  animation: cardPopIn var(--duration-celebration) var(--easing-bounce) 0.3s backwards;
 }
 
-/* Score display */
-.score-display {
-  font-size: 2.8rem;
-  font-weight: 800;
-  margin-bottom: 0.8rem;
-  color: #0D47A1;
-  font-family: 'Fredoka One', cursive;
-  text-shadow: 0 0 6px #4ADE80aa;
-  animation: pulseScore 2.5s ease-in-out infinite alternate;
+@keyframes cardPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(30px);
+  }
+  70% {
+    transform: scale(1.05) translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
-@keyframes pulseScore {
+/* Decorative top accent stripe */
+.result-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--lumen-amber) 0%, var(--verde-calm) 50%, var(--sky-chalk) 100%);
+  border-radius: var(--radius-soft) var(--radius-soft) 0 0;
+  opacity: 0.8;
+}
+
+/* Floating celebration particles */
+.result-card::after {
+  content: '✨';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  font-size: 2rem;
+  animation: floatSparkle 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes floatSparkle {
   0%, 100% {
-    text-shadow: 0 0 6px #4ADE80aa;
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.7;
   }
   50% {
-    text-shadow: 0 0 14px #4ADE80ff;
+    transform: translateY(-10px) rotate(15deg);
+    opacity: 1;
   }
 }
 
-/* Performance summary */
-.performance-summary {
-  font-size: 1.3rem;
-  margin-bottom: 1.7rem;
-  color: #4ADE80; /* Healing Green */
-  font-weight: 700;
+/* ========================================
+   5. Score Display (Signature Lumen Moment)
+   ======================================== */
+.score-display {
+  font-family: var(--font-kid-heading);
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--lumen-amber) 0%, var(--verde-calm) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  animation: scoreReveal var(--duration-celebration) var(--easing-soft-spring) 0.5s backwards;
+  text-shadow: none;
+  filter: drop-shadow(0 2px 12px rgba(255, 184, 107, 0.3));
 }
 
-/* Detailed breakdown */
+@keyframes scoreReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+    filter: blur(10px);
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Lumen glow pulse for score */
+.score-display::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  background: radial-gradient(circle, rgba(255, 184, 107, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: scoreGlowPulse 2s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes scoreGlowPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* ========================================
+   6. Performance Summary
+   ======================================== */
+.performance-summary {
+  font-family: var(--font-kid-body);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--verde-calm);
+  margin-bottom: 2rem;
+  animation: summaryFadeIn 0.4s var(--easing-soft-spring) 0.8s backwards;
+}
+
+@keyframes summaryFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   7. Detailed Breakdown
+   ======================================== */
 .detailed-breakdown {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 1.8rem;
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: #7D8CFF; /* Magic Indigo */
+  margin-bottom: 2rem;
+  padding: 1.5rem 1rem;
+  background: linear-gradient(135deg, rgba(126, 207, 241, 0.08) 0%, rgba(79, 209, 169, 0.08) 100%);
+  border-radius: var(--radius-friendly);
+  gap: 1rem;
+  animation: breakdownSlideUp 0.5s var(--easing-soft-spring) 1s backwards;
+}
+
+@keyframes breakdownSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .detailed-breakdown div {
+  font-family: var(--font-kid-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--dark-text);
   user-select: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
-/* Action buttons container */
+.detailed-breakdown span {
+  font-family: var(--font-kid-heading);
+  font-size: 1.8rem;
+  color: var(--lumen-amber);
+  font-weight: 700;
+}
+
+/* ========================================
+   8. Leaderboard Section (Optional)
+   ======================================== */
+.leaderboard {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-friendly);
+  border: 2px dashed var(--sky-chalk);
+}
+
+.leaderboard h2 {
+  font-family: var(--font-kid-heading);
+  font-size: 1.5rem;
+  color: var(--dark-text);
+  margin-bottom: 1rem;
+}
+
+#leaderboard-list {
+  list-style-position: inside;
+  text-align: left;
+  padding-left: 0;
+}
+
+#leaderboard-list li {
+  font-family: var(--font-kid-body);
+  padding: 0.5rem;
+  border-bottom: 1px solid rgba(126, 207, 241, 0.2);
+}
+
+/* ========================================
+   9. Action Buttons
+   ======================================== */
 .action-buttons {
   display: flex;
   justify-content: center;
-  gap: 1.2rem;
+  gap: 1rem;
   flex-wrap: wrap;
+  animation: buttonsFadeIn 0.5s var(--easing-soft-spring) 1.2s backwards;
 }
 
-/* Action buttons */
+@keyframes buttonsFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .action-buttons button {
-  background: linear-gradient(90deg, #7D8CFF 60%, #A0A9FF 100%);
-  color: white;
-  border: none;
-  border-radius: 28px;
-  padding: 1rem 2.4rem;
-  font-size: 1.1rem;
+  padding: 1.1rem 2.5rem;
+  background: var(--lumen-amber);
+  color: #FFFFFF;
+  font-family: var(--font-kid-heading);
+  font-size: 1.15rem;
   font-weight: 700;
+  border: none;
+  border-radius: var(--radius-soft);
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.18s ease;
-  user-select: none;
-  min-width: 120px;
-  box-shadow: 0 6px 18px rgba(125, 140, 255, 0.7);
+  box-shadow: 
+    0 4px 12px rgba(255, 184, 107, 0.35),
+    0 2px 4px rgba(255, 184, 107, 0.2);
+  transition: 
+    transform var(--duration-micro) var(--easing-soft-spring),
+    background var(--duration-small) var(--easing-soft-spring),
+    box-shadow var(--duration-small) var(--easing-soft-spring);
   position: relative;
   overflow: hidden;
+  user-select: none;
+  min-width: 140px;
+}
+
+/* Lumen Bloom effect on buttons */
+.action-buttons button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: width var(--duration-medium) var(--easing-soft-spring),
+              height var(--duration-medium) var(--easing-soft-spring),
+              opacity var(--duration-medium) var(--easing-soft-spring);
 }
 
 .action-buttons button:hover {
-  background: linear-gradient(95deg, #676FDB 60%, #7D8CFF 100%);
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 24px rgba(125, 140, 255, 0.85);
+  transform: translateY(-2px) scale(1.02);
+  background: var(--verde-calm);
+  box-shadow: 
+    0 6px 20px rgba(79, 209, 169, 0.4),
+    0 3px 8px rgba(79, 209, 169, 0.25);
 }
 
-/* Button click bounce animation */
+.action-buttons button:focus-visible {
+  outline: 3px solid var(--lumen-amber);
+  outline-offset: 4px;
+  box-shadow: 
+    0 0 0 4px rgba(255, 184, 107, 0.2),
+    0 6px 20px rgba(255, 184, 107, 0.45);
+}
+
 .action-buttons button:active {
-  animation: bounceButton 0.25s ease forwards;
+  transform: translateY(0) scale(0.98);
+  transition-duration: 80ms;
 }
 
-@keyframes bounceButton {
-  0%, 100% { transform: scale(1) translateY(0); }
-  50% { transform: scale(1.1) translateY(-5px); }
+/* Exit button variant */
+#exit-btn {
+  background: var(--sky-chalk);
+  box-shadow: 
+    0 4px 12px rgba(126, 207, 241, 0.35),
+    0 2px 4px rgba(126, 207, 241, 0.2);
 }
 
-/* Footer */
+#exit-btn:hover {
+  background: var(--mid-text);
+}
+
+/* ========================================
+   10. Footer Component
+   ======================================== */
 .score-footer {
   margin-top: auto;
-  padding: 1.3rem 0;
-  color: #90A4AE;
-  font-weight: 600;
-  user-select: none;
+  padding: 1.5rem 1rem;
+  font-family: var(--font-kid-body);
   font-size: 0.95rem;
-  font-family: 'Poppins', 'Quicksand', sans-serif;
+  font-weight: 400;
+  color: var(--mid-text);
+  text-align: center;
+  user-select: none;
+  opacity: 0.7;
 }
 
-/* Responsive */
-@media (max-width: 450px) {
+/* ========================================
+   11. Responsive Design
+   ======================================== */
+@media (max-width: 520px) {
   .result-card {
-    padding: 1.5rem;
+    width: 95vw;
+    padding: 2rem 1.5rem 1.75rem 1.5rem;
   }
+
+  .score-header .logo {
+    font-size: 2.25rem;
+  }
+
+  .score-header .tagline {
+    font-size: 1.1rem;
+  }
+
+  .score-display {
+    font-size: 2.5rem;
+  }
+
+  .performance-summary {
+    font-size: 1.2rem;
+  }
+
+  .detailed-breakdown {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem 1rem;
+  }
+
+  .detailed-breakdown div {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .action-buttons button {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+@media (max-width: 360px) {
+  .score-header .logo {
+    font-size: 2rem;
+  }
+
   .score-display {
     font-size: 2.2rem;
   }
+
   .performance-summary {
     font-size: 1.1rem;
   }
+
+  .action-buttons button {
+    font-size: 1rem;
+    padding: 1rem 2rem;
+  }
+}
+
+/* ========================================
+   12. Accessibility Enhancements
+   ======================================== */
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .result-card {
+    border: 2px solid var(--dark-text);
+  }
+
+  .action-buttons button {
+    border: 2px solid var(--dark-text);
+  }
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ========================================
+   13. Performance Optimizations
+   ======================================== */
+
+/* GPU acceleration */
+.result-card,
+.score-display,
+.action-buttons button,
+.score-header .logo {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ========================================
+   14. Dynamic Performance Classes
+   ======================================== */
+
+/* Excellent performance (85%+) */
+.result-card.excellent .score-display {
+  background: linear-gradient(135deg, var(--success) 0%, var(--verde-calm) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: excellentCelebrate 1s var(--easing-bounce) 0.5s;
+}
+
+@keyframes excellentCelebrate {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.15) rotate(-5deg); }
+  75% { transform: scale(1.15) rotate(5deg); }
+}
+
+/* Good performance (60-84%) */
+.result-card.good .score-display {
+  background: linear-gradient(135deg, var(--lumen-amber) 0%, var(--sky-chalk) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Needs practice (<60%) */
+.result-card.practice .score-display {
+  background: linear-gradient(135deg, var(--warning) 0%, var(--lumen-amber) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ========================================
+   15. Print Styles
+   ======================================== */
+@media print {
+  body {
+    background: white;
+  }
+
+  body::before {
+    display: none;
+  }
+
+  .result-card {
+    box-shadow: none;
+    border: 1px solid #E5E7EB;
+  }
+
+  .action-buttons {
+    display: none;
+  }
+
+  .score-footer {
+    page-break-after: avoid;
+  }
+}
+
+/* ========================================
+   16. Utility Classes
+   ======================================== */
+
+.lumen-accent {
+  color: var(--lumen-amber);
+}
+
+.verde-accent {
+  color: var(--verde-calm);
+}
+
+.sky-accent {
+  color: var(--sky-chalk);
+}
+
+/* Hidden attribute support */
+[hidden] {
+  display: none !important;
 }
