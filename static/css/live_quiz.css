@@ -1,271 +1,342 @@
 /* live_quiz.css */
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai&family=Fredoka+One&family=Poppins&family=Quicksand&display=swap');
 
+/* ======================================
+   SmartQuiz-Jr — Lumen Live Quiz System
+   ====================================== */
+
+/* 1. Design Tokens */
+:root {
+  --lumen-amber: #FFB86B;
+  --verde-calm: #4FD1A9;
+  --sky-chalk: #7ECFF1;
+  --dark-text: #1F2937;
+  --mid-text: #4B5563;
+  --error: #FF5A6C;
+  --success: #29C36A;
+  --surface: #FBFDFF;
+
+  --radius-soft: 24px;
+  --radius-friendly: 18px;
+
+  --font-kid-heading: 'Baloo 2', 'Fredoka One', 'Baloo Bhai', cursive;
+  --font-kid-body: 'Poppins', 'Quicksand', sans-serif;
+
+  --motion-spring: cubic-bezier(.2, .9, .2, 1);
+  --duration-micro: 160ms;
+  --duration-small: 220ms;
+  --duration-medium: 350ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-micro: 0ms;
+    --duration-small: 0ms;
+    --duration-medium: 0ms;
+  }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background: #F5F7FF; /* Magic Mist */
-  font-family: 'Poppins', 'Quicksand', sans-serif;
-  color: #1A237E; /* Dark blue text */
+  padding: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FBFDFF 0%, #F0F9FF 100%);
+  font-family: var(--font-kid-body);
+  color: var(--dark-text);
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
-/* Top Bar */
+/* 2. Header (Top Bar) */
 header {
-  background: #FFB703; /* Golden Sparkle */
-  padding: 0.8rem 1.2rem;
+  background: var(--lumen-amber);
+  color: #fff;
+  padding: 0.7rem 1.3rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-kid-heading);
+  font-size: 1.05rem;
   font-weight: 700;
-  font-size: 1rem;
-  color: #FFFFFF;
-  box-shadow: 0 2px 10px rgba(255, 183, 3, 0.4);
-  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
-  user-select: none;
-  position: relative;
-}
-
-/* Magical wand-like glowing timer */
-header .timer {
-  font-family: 'Fredoka One', cursive;
-  background: linear-gradient(90deg, #7D8CFF 20%, #A0A9FF 80%);
-  color: white;
-  padding: 0.2rem 0.8rem;
-  border-radius: 14px;
-  font-weight: 900;
-  min-width: 48px;
-  text-align: center;
-  box-shadow:
-    0 0 6px #7D8CFF,
-    0 0 12px #7D8CFF70,
-    0 0 18px #7D8CFF90;
-  animation: pulseGlow 2.5s ease-in-out infinite;
+  box-shadow: 0 2px 10px rgba(255, 184, 107, .22);
   user-select: none;
 }
 
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow:
-      0 0 6px #7D8CFF70,
-      0 0 12px #7D8CFF50,
-      0 0 18px #7D8CFF30;
-  }
-  50% {
-    box-shadow:
-      0 0 12px #7D8CFF90,
-      0 0 24px #7D8CFFA0,
-      0 0 36px #7D8CFFB0;
-  }
-}
-
-/* Header text styles */
 header .logo {
-  font-size: 1.75rem;
-  font-weight: 900;
-  letter-spacing: 1.5px;
-  color: #FFB703; /* Golden Sparkle */
-  text-shadow: 0 0 8px #FFB703AA;
+  font-size: 1.7rem;
+  letter-spacing: 1.3px;
+  background: linear-gradient(90deg, #FFB86B, #FFA940);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 8px #FFB86BAA;
+  animation: logo-glow 3s ease-in-out infinite;
+}
+
+@keyframes logo-glow {
+  0%, 100% { filter: drop-shadow(0 2px 8px rgba(255, 184, 107, 0.15)); }
+  60% { filter: drop-shadow(0 2px 16px rgba(255, 184, 107, 0.4)); }
 }
 
 header .right-group {
   display: flex;
-  gap: 1.6rem;
+  gap: 1.2rem;
   align-items: center;
-  font-weight: 600;
+  font-family: var(--font-kid-body);
 }
 
 header .room-code,
 header .student-name {
-  font-family: 'Baloo Bhai', cursive;
+  font-family: var(--font-kid-heading);
+  color: #fff;
+}
+
+header .timer {
+  background: linear-gradient(90deg, var(--sky-chalk) 20%, var(--verde-calm) 80%);
+  color: #fff;
+  padding: 0.25rem 0.95rem;
+  font-family: var(--font-kid-heading);
+  font-size: 1.12em;
+  border-radius: 1.3em;
+  font-weight: 900;
+  box-shadow: 0 0 8px var(--sky-chalk), 0 0 14px var(--sky-chalk);
+  animation: pulse-glow 2.5s var(--motion-spring) infinite;
   user-select: none;
 }
 
-/* Question Container */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 10px var(--sky-chalk); }
+  50% { box-shadow: 0 0 18px var(--sky-chalk), 0 0 24px var(--verde-calm); }
+}
+
+/* 3. Quiz Container */
 main {
-  flex-grow: 1;
+  margin: 2rem auto 2.5rem auto;
+  background: #fff;
+  border-radius: var(--radius-soft);
+  box-shadow: 0 7px 28px rgba(126,207,241,0.13), 0 2px 6px rgba(255,184,107,0.08);
+  padding: 2.1rem 2.5rem;
+  width: 95vw;
+  max-width: 610px;
   display: flex;
   flex-direction: column;
-  max-width: 600px;
-  width: 90vw;
-  margin: 2.5rem auto 3rem auto;
-  background: #FFFFFF; /* Scroll White */
-  border-radius: 24px;
-  padding: 2rem 2.5rem;
-  box-shadow: 0 6px 25px rgba(125, 140, 255, 0.25);
-  font-family: 'Poppins', 'Quicksand', sans-serif;
-  user-select: none;
+  align-items: center;
+  animation: quizIn 0.32s var(--motion-spring) backwards;
+}
+@keyframes quizIn {
+  from { opacity: 0; transform: scale(0.97) translateY(14px);}
+  to { opacity: 1; transform: scale(1) translateY(0);}
 }
 
-/* Question numbering */
+/* 4. Question-UI */
 .question-number {
+  font-family: var(--font-kid-heading);
+  color: var(--lumen-amber);
+  font-size: 1.13rem;
+  margin-bottom: 1.1rem;
   font-weight: 700;
-  font-size: 1.1rem;
-  color: #FFB703; /* Golden Sparkle */
-  margin-bottom: 1rem;
   text-align: center;
-  font-family: 'Fredoka One', cursive;
+  letter-spacing: 0.5px;
 }
-
-/* Question text */
 .question-text {
-  font-size: 1.6rem;
+  font-family: var(--font-kid-body);
+  font-size: 1.37rem;
   font-weight: 700;
-  color: #1A237E;
+  color: var(--dark-text);
   text-align: center;
-  margin-bottom: 2.4rem;
-  line-height: 1.3;
+  margin-bottom: 2.1rem;
+  line-height: 1.23;
 }
 
-/* Options grid */
 .options {
   display: grid;
-  gap: 1.4rem;
+  gap: 1.25rem;
   grid-template-columns: 1fr 1fr;
+  width: 100%;
+  margin-bottom: 1.3rem;
 }
 
-/* Option buttons - bubble style */
+/* 5. Option Buttons */
 button.option {
-  background: #E3F2FD; /* Magic light blue bubble */
-  border: 3px solid transparent;
-  border-radius: 20px;
-  padding: 1.15rem;
-  font-size: 1.1rem;
+  background: var(--sky-chalk);
+  border: 2.2px solid transparent;
+  border-radius: 19px;
+  font-family: var(--font-kid-body);
+  font-size: 1.07rem;
   font-weight: 700;
-  color: #5865D6;
+  color: var(--mid-text);
+  box-shadow: 0 2.5px 7px rgba(126,207,241,0.13);
+  padding: 1.1rem 0.7rem;
+  transition:
+    background var(--duration-small) var(--motion-spring),
+    border-color var(--duration-small) var(--motion-spring),
+    color var(--duration-small) var(--motion-spring),
+    transform var(--duration-micro) var(--motion-spring);
   cursor: pointer;
-  transition: background 0.3s, border-color 0.3s, transform 0.18s;
-  box-shadow: 0 4px 8px rgba(125, 140, 255, 0.2);
+  will-change: transform;
+  outline: none;
   user-select: none;
-  outline-offset: 3px;
-  outline-color: transparent;
+  position: relative;
 }
 
-/* Bubble pop on hover if not selected and enabled */
-button.option:hover:not(.selected):not(:disabled) {
-  background: #B6BBFF;
-  transform: scale(1.12);
-  border-color: #7D8CFF;
-  box-shadow: 0 6px 15px rgba(125, 140, 255, 0.5);
+button.option:hover:not(.selected):not(:disabled),
+button.option:focus-visible:not(.selected):not(:disabled) {
+  background: var(--verde-calm);
+  color: #fff;
+  border-color: var(--verde-calm);
+  transform: scale(1.07);
 }
 
-/* Selected option - correct answer style */
 button.option.selected {
-  background: #4ADE80; /* Healing Green */
-  color: white;
-  border-color: #3CB371;
-  cursor: default;
-  transform: scale(1.12);
-  box-shadow: 0 0 15px #4ADE80AA, 0 0 25px #4ADE80CC;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  background: var(--lumen-amber);
+  color: #fff;
+  border-color: var(--lumen-amber);
+  transform: scale(1.13) rotate(-2deg);
+  box-shadow: 0 2px 18px var(--lumen-amber);
+  z-index: 1;
+  animation: winPop var(--duration-medium) var(--motion-spring);
+}
+@keyframes winPop {
+  0% { transform: scale(1) rotate(0deg);}
+  48% { transform: scale(1.21) rotate(5deg);}
+  100% { transform: scale(1.13) rotate(-2deg);}
 }
 
-/* Disabled selected option style */
 button.option:disabled {
+  opacity: 0.77;
   cursor: default;
-  opacity: 0.7;
 }
 
-/* Wrong answer button style */
 button.option.wrong {
-  background: #FF6B6B; /* Potion Spill Red */
-  color: white;
-  border-color: #E55353;
-  box-shadow: 0 0 15px #FF6B6BAA, 0 0 25px #FF6B6BCC;
-  cursor: default;
-  transform: scale(1.12);
+  background: var(--error);
+  color: #fff;
+  border-color: var(--error);
+  transform: scale(1.13) rotate(2deg);
+  animation: shake 0.26s cubic-bezier(0.77,0,.175,1) 1;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0) scale(1.13) rotate(2deg);}
+  20% { transform: translateX(-7px) scale(1.13) rotate(1deg);}
+  40% { transform: translateX(6px) scale(1.13) rotate(-1deg);}
+  60% { transform: translateX(-5px) scale(1.13) rotate(3deg);}
+  80% { transform: translateX(5px) scale(1.13) rotate(-2deg);}
 }
 
-/* Bottom Bar */
+/* 6. Bottom Bar */
 footer {
-  max-width: 600px;
-  width: 90vw;
+  max-width: 610px;
+  width: 95vw;
   margin: 0 auto 2.5rem auto;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  font-size: 1rem;
-  color: #333f7f;
-  font-weight: 600;
-  gap: 1.2rem;
-  font-family: 'Poppins', 'Quicksand', sans-serif;
-  user-select: none;
+  justify-content: space-between;
+  gap: 1.1rem;
 }
 
-/* Submit button */
 .submit-btn {
-  padding: 1rem 2.2rem;
-  background: linear-gradient(90deg, #7D8CFF 60%, #A0A9FF 100%);
-  color: white;
+  padding: 1rem 2.3rem;
+  background: var(--lumen-amber);
+  color: #fff;
   border: none;
-  border-radius: 28px;
+  border-radius: 1.9em;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+  font-family: var(--font-kid-heading);
+  letter-spacing: 0.5px;
+  box-shadow: 0 3.5px 15px rgba(255,184,107, 0.36);
+  transition:
+    background var(--duration-small) var(--motion-spring),
+    transform var(--duration-micro) var(--motion-spring);
   cursor: pointer;
   user-select: none;
-  box-shadow: 0 6px 18px rgba(125, 140, 255, 0.6);
-  transition: background 0.3s ease, transform 0.18s ease;
+  outline: none;
+  will-change: transform;
   position: relative;
-  overflow: hidden;
 }
-
-.submit-btn:hover:not(:disabled) {
-  background: linear-gradient(95deg, #676FDB 60%, #7D8CFF 100%);
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 24px rgba(125, 140, 255, 0.8);
-}
-
-/* Disabled submit button state */
 .submit-btn:disabled {
-  background: #90caf9;
+  background: #FFDFAA;
+  color: #fff;
   cursor: not-allowed;
   box-shadow: none;
+  opacity: 0.66;
+}
+.submit-btn:not(:disabled):hover,
+.submit-btn:not(:disabled):focus-visible {
+  background: var(--verde-calm);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 7px 22px rgba(79,209,169,0.22);
 }
 
-/* Progress text */
 .progress-text {
+  font-family: var(--font-kid-body);
   flex-grow: 1;
   text-align: right;
+  color: var(--mid-text);
+  font-size: 1.04em;
   font-style: italic;
-  color: #4a5f92;
-  font-family: 'Poppins', 'Quicksand', sans-serif;
+  margin-left: 1.4rem;
+  user-select: none;
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-  main {
-    margin: 1.5rem 1rem 2rem 1rem;
-    padding: 1.5rem 1.6rem;
+/* 7. Responsive Design */
+@media (max-width: 600px) {
+  main, footer {
+    max-width: 100vw;
+    width: 98vw;
+    padding: 1.2rem;
   }
   .question-text {
-    font-size: 1.25rem;
+    font-size: 1.08rem;
   }
-  button.option {
-    font-size: 0.95rem;
-    padding: 1rem;
-    border-radius: 16px;
+  header .logo {
+    font-size: 1.13rem;
   }
-  footer {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.8rem;
+  .submit-btn {
+    font-size: 1.04rem;
   }
   .progress-text {
-    text-align: center;
+    margin-left: 0.7rem;
+    font-size: 0.97em;
+  }
+}
+@media (max-width: 420px) {
+  main, footer {
+    padding: 0.8rem;
+  }
+  .question-text {
+    font-size: 0.99rem;
+  }
+  .submit-btn {
+    font-size: 0.99rem;
+    padding: 0.77rem 1.3rem;
   }
 }
 
-/* Micro animations for button click bounce */
-button.option:active, .submit-btn:active {
-  animation: bounceButton 0.25s ease forwards;
+/* 8. Accessibility + Focus */
+button.option:focus-visible, .submit-btn:focus-visible {
+  outline: 2.7px solid var(--lumen-amber);
+  outline-offset: 2.5px;
 }
 
-@keyframes bounceButton {
-  0%, 100% { transform: scale(1) translateY(0); }
-  50% { transform: scale(1.1) translateY(-5px); }
+/* 9. Animation Performance */
+button.option, .submit-btn, main, header {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1200px;
+}
+
+/* 10. Utility Classes */
+.lumen-accent { color: var(--lumen-amber); }
+.verde-accent { color: var(--verde-calm);}
+.sky-accent { color: var(--sky-chalk);}
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
 }
