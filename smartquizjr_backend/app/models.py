@@ -1,6 +1,7 @@
 #app/models.py
 from sqlalchemy import Column, Integer, String, JSON, Float, DateTime, func, Enum, Index
 from sqlalchemy import JSON
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import declarative_base
 import enum
 
@@ -67,4 +68,4 @@ class Rag_temp_content(Base):
     
     id = Column(Integer, primary_key=True)
     uuid_id = Column(String, nullable=False)
-    content = Column(String)
+    content = Column(JSONB)
