@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import desc, asc
 from app.models import QuizQuestion, Submission, QuizSession, Participant
 from datetime import datetime
+import uuid
 
 # room logic
 import random, string
@@ -15,7 +16,8 @@ def add_quiz(db: Session, quiz_data: dict) -> QuizQuestion:
         options = quiz_data['options'],
         correct_answer = quiz_data['correct_answer'],
         topic = quiz_data['topic'],
-        difficulty = quiz_data.get('difficulty', '')
+        difficulty = quiz_data.get('difficulty', ''),
+        uuid_id = quiz_data['uuid_id']
     )
     
     db.add(quiz)

@@ -42,6 +42,11 @@ class QuizCreate(BaseModel):
     correct_answer: str
     topic: str
     difficulty: str
+    uuid_id: str
+    
+    class Config:
+        extra = "ignore"
+
     
 class QuizOut(BaseModel):
     id: int

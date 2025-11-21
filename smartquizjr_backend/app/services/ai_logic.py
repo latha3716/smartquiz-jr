@@ -164,6 +164,6 @@ async def create_questions(topic: str, age: int, difficulty: str, count: int, db
     db.query(Rag_temp_content).filter_by(uuid_id=session_uuid).delete()
     db.commit()
 
-    return final_questions
+    return (final_questions, session_uuid)
 
 
