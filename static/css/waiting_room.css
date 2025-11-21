@@ -1,151 +1,607 @@
 /* waiting_room.css */
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai&family=Fredoka+One&family=Poppins&family=Quicksand&display=swap');
 
-body {
-  background: #F5F7FF; /* Magic Mist */
-  display: flex;
-  min-height: 100vh;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Poppins', 'Quicksand', sans-serif;
-  margin: 0;
-  color: #1A237E;
+:root {
+  /* Lumen Color Palette */
+  --lumen-amber: #FFB86B;
+  --verde-calm: #4FD1A9;
+  --sky-chalk: #7ECFF1;
+
+  /* Neutrals */
+  --dark-text: #1F2937;
+  --mid-text: #4B5563;
+  --light-text: #6B7280;
+  --surface: #FBFDFF;
+
+  /* Semantic */
+  --error: #FF5A6C;
+
+  /* Shape System */
+  --radius-friendly: 18px;
+  --radius-soft: 26px;
+
+  /* Motion System */
+  --duration-micro: 140ms;
+  --duration-small: 220ms;
+  --duration-medium: 350ms;
+  --easing-soft-spring: cubic-bezier(.2, .9, .2, 1);
+  --easing-gentle: cubic-bezier(.4, 0, .2, 1);
+
+  /* Typography */
+  --font-kid-heading: 'Baloo 2', 'Fredoka One', 'Baloo Bhai', cursive;
+  --font-kid-body: 'Poppins', 'Quicksand', sans-serif;
 }
 
-.waiting-card {
-  background: #FFFFFF; /* Scroll White */
-  padding: 2rem 1.5rem 1.5rem 1.5rem;
-  border-radius: 24px;
-  box-shadow: 0 6px 30px rgba(125, 140, 255, 0.15);
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-micro: 0ms;
+    --duration-small: 0ms;
+    --duration-medium: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========================================
+   2. Base Styles
+   ======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FBFDFF 0%, #F0F9FF 100%);
+  font-family: var(--font-kid-body);
+  color: var(--dark-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ambient background animation */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(126, 207, 241, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(79, 209, 169, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 184, 107, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+  animation: ambientPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes ambientPulse {
+  0% { opacity: 0.4; }
+  100% { opacity: 0.7; }
+}
+
+/* ========================================
+   3. Waiting Card
+   ======================================== */
+main.waiting-card {
+  background: #FFFFFF;
+  padding: 3rem 2.5rem 2.5rem 2.5rem;
+  border-radius: var(--radius-soft);
+  box-shadow: 
+    0 4px 6px rgba(79, 209, 169, 0.08),
+    0 12px 32px rgba(126, 207, 241, 0.15),
+    0 2px 4px rgba(255, 184, 107, 0.08);
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 300px;
-  max-width: 95vw;
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  animation: cardEnter var(--duration-medium) var(--easing-soft-spring);
   user-select: none;
 }
 
-/* Logo style */
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Top accent stripe */
+main.waiting-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--lumen-amber) 0%, var(--verde-calm) 50%, var(--sky-chalk) 100%);
+  border-radius: var(--radius-soft) var(--radius-soft) 0 0;
+  opacity: 0.7;
+}
+
+/* ========================================
+   4. Logo
+   ======================================== */
 .logo {
-  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
-  font-size: 2.4rem;
+  font-family: var(--font-kid-heading);
+  font-size: 2.5rem;
   font-weight: 700;
-  color: #FFB703; /* Golden Sparkle */
-  margin-bottom: 1.3rem;
-  letter-spacing: 1.2px;
-  text-shadow: 0 0 10px #FFB703aa;
-  animation: glowLogo 3s ease-in-out infinite alternate;
-}
-
-/* Room title style */
-.room-title {
-  font-family: 'Baloo Bhai', cursive;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #7D8CFF; /* Magic Indigo */
-  margin-bottom: 1.2rem;
-}
-
-/* Info section */
-.info-section {
+  background: linear-gradient(135deg, var(--lumen-amber) 0%, #FFA940 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 1px;
   margin-bottom: 1.5rem;
-  width: 100%;
   text-align: center;
-  font-family: 'Poppins', 'Quicksand', sans-serif;
+  animation: logoGlow 3s ease-in-out infinite;
+}
+
+@keyframes logoGlow {
+  0%, 100% {
+    filter: drop-shadow(0 2px 8px rgba(255, 184, 107, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 2px 14px rgba(255, 184, 107, 0.6));
+  }
+}
+
+/* ========================================
+   5. Room Title
+   ======================================== */
+.room-title {
+  font-family: var(--font-kid-heading);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--sky-chalk);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  animation: titleFadeIn 0.4s var(--easing-soft-spring) 0.2s backwards;
+}
+
+@keyframes titleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   6. Info Section
+   ======================================== */
+.info-section {
+  width: 100%;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(126, 207, 241, 0.06) 0%, rgba(79, 209, 169, 0.06) 100%);
+  border-radius: var(--radius-friendly);
+  border-left: 4px solid var(--verde-calm);
+  animation: infoSlideIn 0.5s var(--easing-soft-spring) 0.3s backwards;
+}
+
+@keyframes infoSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .info-text {
+  font-family: var(--font-kid-body);
   font-size: 1.1rem;
-  margin: 7px 0;
-  color: #4A5D92;
   font-weight: 600;
+  color: var(--mid-text);
+  margin: 0.75rem 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-/* Waiting dots container */
+.info-text strong {
+  color: var(--lumen-amber);
+  font-weight: 700;
+  font-size: 1.15em;
+  margin-left: 0.25rem;
+}
+
+/* ========================================
+   7. Waiting Indicator (Lumen Dots)
+   ======================================== */
 .waiting-indicator {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 40px;
-  margin-bottom: 1.8rem;
+  height: 60px;
+  margin-bottom: 2rem;
+  animation: indicatorFadeIn 0.5s var(--easing-soft-spring) 0.5s backwards;
 }
 
-/* Each dot style */
+@keyframes indicatorFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Lumen dots with color rotation */
 .dot {
-  width: 14px;
-  height: 14px;
-  margin: 0 8px;
+  width: 16px;
+  height: 16px;
+  margin: 0 10px;
   border-radius: 50%;
-  background: #7D8CFF;
-  opacity: 0.7;
-  animation: bounce 1.2s infinite alternate;
-  box-shadow: 0 0 8px #7D8CFFaa;
+  background: var(--sky-chalk);
+  box-shadow: 0 0 12px rgba(126, 207, 241, 0.4);
+  animation: lumenBounce 1.4s ease-in-out infinite;
+  will-change: transform, background;
+}
+
+.dot:nth-child(1) {
+  animation-delay: 0s;
 }
 
 .dot:nth-child(2) {
-  animation-delay: 0.3s;
+  animation-delay: 0.2s;
 }
+
 .dot:nth-child(3) {
-  animation-delay: 0.6s;
+  animation-delay: 0.4s;
 }
 
-/* Bounce animation */
-@keyframes bounce {
-  0% {
-    transform: translateY(0);
+/* Lumen bounce with color cycle */
+@keyframes lumenBounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    background: var(--sky-chalk);
+    box-shadow: 0 0 12px rgba(126, 207, 241, 0.4);
   }
-  100% {
-    transform: translateY(-18px);
-    opacity: 1;
-    background: #4A5D92;
-    box-shadow: 0 0 15px #4A5D92bb;
+  25% {
+    transform: translateY(-20px) scale(1.1);
+    background: var(--verde-calm);
+    box-shadow: 0 4px 20px rgba(79, 209, 169, 0.6);
+  }
+  50% {
+    transform: translateY(0) scale(1);
+    background: var(--lumen-amber);
+    box-shadow: 0 0 16px rgba(255, 184, 107, 0.5);
+  }
+  75% {
+    transform: translateY(-10px) scale(1.05);
+    background: var(--verde-calm);
+    box-shadow: 0 2px 16px rgba(79, 209, 169, 0.5);
   }
 }
 
-/* Leave button style */
+/* Alternative subtle pulse for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: lumenPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes lumenPulse {
+    0%, 100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+}
+
+/* ========================================
+   8. Leave Button
+   ======================================== */
 .leave-btn {
   width: 100%;
-  padding: 1rem;
-  background: linear-gradient(90deg, #FF6B6B 55%, #FFB3B3 100%);
-  color: #fff;
-  font-family: 'Fredoka One', 'Baloo Bhai', cursive;
+  padding: 1.1rem 2rem;
+  background: var(--mid-text);
+  color: #FFFFFF;
+  font-family: var(--font-kid-heading);
   font-size: 1.1rem;
   font-weight: 700;
   border: none;
-  border-radius: 28px;
-  margin-top: 0.3rem;
+  border-radius: var(--radius-soft);
+  margin-top: 0.5rem;
   cursor: pointer;
-  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.6);
-  transition: background 0.3s, transform 0.18s;
+  box-shadow: 
+    0 4px 12px rgba(75, 85, 99, 0.25),
+    0 2px 4px rgba(75, 85, 99, 0.15);
+  transition: 
+    transform var(--duration-micro) var(--easing-soft-spring),
+    background var(--duration-small) var(--easing-gentle),
+    box-shadow var(--duration-small) var(--easing-gentle);
+  position: relative;
+  overflow: hidden;
   user-select: none;
+  animation: buttonFadeIn 0.5s var(--easing-soft-spring) 0.7s backwards;
+}
+
+@keyframes buttonFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .leave-btn:hover {
-  background: linear-gradient(90deg, #E55353 60%, #FF6B6B 100%);
-  transform: scale(1.05);
-  box-shadow: 0 7px 22px rgba(229, 83, 83, 0.9);
+  transform: translateY(-2px) scale(1.02);
+  background: var(--dark-text);
+  box-shadow: 
+    0 6px 20px rgba(31, 41, 55, 0.3),
+    0 3px 8px rgba(31, 41, 55, 0.2);
 }
 
-/* Glow animation for logo */
-@keyframes glowLogo {
-  from {
-    text-shadow: 0 0 10px #FFB703aa;
+.leave-btn:focus-visible {
+  outline: 3px solid var(--lumen-amber);
+  outline-offset: 4px;
+  box-shadow: 
+    0 0 0 4px rgba(255, 184, 107, 0.2),
+    0 6px 20px rgba(31, 41, 55, 0.3);
+}
+
+.leave-btn:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 80ms;
+}
+
+/* ========================================
+   9. Status Message
+   ======================================== */
+.status-message {
+  font-family: var(--font-kid-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--light-text);
+  margin-top: 1.5rem;
+  text-align: center;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* ========================================
+   10. Connection Status Indicator
+   ======================================== */
+.connection-status {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 0.6rem 1rem;
+  background: var(--verde-calm);
+  color: white;
+  font-family: var(--font-kid-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(79, 209, 169, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 100;
+}
+
+.connection-status.show {
+  opacity: 1;
+}
+
+.connection-status::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
   }
-  to {
-    text-shadow: 0 0 20px #FFB703ff;
+  50% {
+    opacity: 0.5;
+    transform: scale(1.3);
   }
 }
 
-/* Responsive */
-@media (max-width: 490px) {
-  .waiting-card {
-    width: 98vw;
-    padding: 1rem 0.5rem;
+.connection-status.error {
+  background: var(--error);
+}
+
+.connection-status.error::before {
+  animation: none;
+  background: white;
+}
+
+/* ========================================
+   11. Responsive Design
+   ======================================== */
+@media (max-width: 520px) {
+  main.waiting-card {
+    padding: 2.5rem 2rem 2rem 2rem;
+    max-width: 95vw;
   }
+
   .logo {
-    font-size: 1.6rem;
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
   }
+
   .room-title {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
   }
+
+  .info-section {
+    padding: 1.25rem;
+  }
+
+  .info-text {
+    font-size: 1rem;
+  }
+
+  .dot {
+    width: 14px;
+    height: 14px;
+    margin: 0 8px;
+  }
+
+  .leave-btn {
+    font-size: 1rem;
+    padding: 1rem 1.75rem;
+  }
+
+  .connection-status {
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.8rem;
+  }
+}
+
+@media (max-width: 360px) {
+  main.waiting-card {
+    padding: 2rem 1.5rem 1.75rem 1.5rem;
+  }
+
+  .logo {
+    font-size: 1.75rem;
+  }
+
+  .room-title {
+    font-size: 1.3rem;
+  }
+
+  .info-text {
+    font-size: 0.95rem;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}
+
+/* ========================================
+   12. Accessibility Enhancements
+   ======================================== */
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  main.waiting-card {
+    border: 2px solid var(--dark-text);
+  }
+
+  .leave-btn {
+    border: 2px solid var(--dark-text);
+  }
+
+  .dot {
+    border: 2px solid var(--dark-text);
+  }
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ========================================
+   13. Performance Optimizations
+   ======================================== */
+
+/* GPU acceleration */
+.dot,
+main.waiting-card,
+.leave-btn {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ========================================
+   14. Print Styles
+   ======================================== */
+@media print {
+  body {
+    background: white;
+  }
+
+  body::before {
+    display: none;
+  }
+
+  main.waiting-card {
+    box-shadow: none;
+    border: 1px solid #E5E7EB;
+  }
+
+  .waiting-indicator,
+  .leave-btn,
+  .connection-status {
+    display: none;
+  }
+}
+
+/* ========================================
+   15. Utility Classes
+   ======================================== */
+.lumen-accent {
+  color: var(--lumen-amber);
+}
+
+.verde-accent {
+  color: var(--verde-calm);
+}
+
+.sky-accent {
+  color: var(--sky-chalk);
+}
+
+[hidden] {
+  display: none !important;
 }
