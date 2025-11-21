@@ -91,10 +91,14 @@ validate_agent = Agent(
     
     description="An agent that verfies the preivous questions and generate unique question which is different from the previous question and appropriate to the rules like topic, age, and difficulty",
     instructions=[
-        "verify the previous questions from the latest question",
-        "the questions should not be repetitive",
-        "genenrate a new question which is different from the previous questions but come under the same topic, age, and difficulty",
-    ] + (single_question_instructions),
+        "Before generating a new question, identify the KEY FACT used in each previous question and avoid using those facts again. Think in terms of concepts, not words.",
+        "You MUST compare the NEW question you will generate with ALL previous questions.",
+        "If ANY previous question is similar in meaning, theme, numbers, structure, OR fact, you must create a completely DIFFERENT question.",
+        "Avoid questions about the same fact more than once (e.g., 'largest planet', 'closest planet', 'has rings', 'has most moons').",
+        "Use totally different concepts from the topic.",
+        "You must vary sentence structure, reasoning style, and fact type."
+    ] + single_question_instructions,
+
     
     markdown=False,
     add_history_to_context=False,
