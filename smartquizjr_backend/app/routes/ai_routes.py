@@ -5,6 +5,7 @@ from app.schemas import AIRequest, QuizCreate
 from app.database import get_db
 
 from app.services.ai_logic import create_questions
+from app.services.quiz_logic import add_quiz
 import requests
 router = APIRouter(
     prefix="/ai",
@@ -30,8 +31,8 @@ async def create_AI_questions_with_topic(ai_request: AIRequest, db: Session = De
             difficulty = questions_model[i]['difficulty'],
             uuid_id = uuid_id
         )
-        requests.post(base_url+"/quiz/add", json = quiz.model_dump())
-        
+        # requests.post(base_url+"/quiz/add", json = quiz.model_dump())
+        add_quiz(db, quiz.model_dump())
     return {
                 "status": "success", 
                 "created": len(questions_model), 
