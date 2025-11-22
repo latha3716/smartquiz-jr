@@ -593,13 +593,7 @@ roomDisplay.addEventListener('click', () => {
       // Visual pulse feedback
     });
 });
-// Compares Sets to detect new joiners
-const newStudents = currentIds.filter(id => !previousIds.has(id));
 
-newStudents.forEach(student => {
-  li.classList.add('new-student'); // Verde pulse animation
-  announceToScreenReader(`${student.name} joined`);
-});
 // Saves bandwidth when tab hidden
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {

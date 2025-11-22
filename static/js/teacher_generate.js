@@ -25,10 +25,14 @@ async function generateQuestions() {
     showStatus("Generating questions... please wait.");
 
     try {
+
+        // For now static teacher_id = 1
         const body = {
+            teacher_id: 1,
             topic: topic,
+            age: age,
             difficulty: difficulty,
-            age: age
+            questions: 10
         };
 
         const res = await fetch(`${API_BASE}/ai/create`, {
@@ -44,12 +48,11 @@ async function generateQuestions() {
 
         const data = await res.json();
 
-        // Save uuid_id for teacher_start.js
+        // Save uuid_id returned by backend
         localStorage.setItem("uuid_id", data.uuid_id);
 
         showStatus("Questions created successfully!", true);
 
-        // Redirect teacher to start session page
         setTimeout(() => {
             window.location.href = "teacher_start.html";
         }, 1000);
