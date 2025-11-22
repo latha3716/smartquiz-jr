@@ -1,9 +1,14 @@
 // teacher_start.js
 const API_BASE = "https://smartquiz-jr-production.up.railway.app";
-const topicInput = document.getElementById("topic-input");
+
+let topicInput;
+
+document.addEventListener("DOMContentLoaded", () => {
+    topicInput = document.getElementById("topic-input");
+});
 
 document.getElementById("go-to-generate-btn").addEventListener("click", () => {
-    window.location.href = "teacher_generate.html";
+  window.location.href = "teacher_generate.html";
 });
 
 
@@ -184,23 +189,17 @@ async function createNewSession() {
     setRoomDisplay('');
 
     const uuid_id = localStorage.getItem("uuid_id");  // <-- fetch stored uuid
-    const topic = topicInput.value.trim();
+    // const topic = topicInput.value.trim();
+    const topic = topicInput ? topicInput.value.trim() : "";
+
 
     const body = {
       template_id: 0,
-      uuid_id: uuid_id,   
+      uuid_id: uuid_id,
       topic: topic,
-      questions: [],        
+      questions: [],
       config: {}
     };
-
-
-    // const body = {
-    //   template_id: 0,
-    //   questions: [0],
-    //   status: "waiting",
-    //   config: {}
-    // };
 
     const res = await fetch(`${API_BASE}/quiz/create`, {
       method: "POST",
