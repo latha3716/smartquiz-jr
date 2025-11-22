@@ -2,6 +2,8 @@
 let questions = [];
 let answers = {};
 let quizStartTime = null;
+const API_BASE = "https://smartquiz-jr-production.up.railway.app";
+
 // initQuiz();
 
 // async function loadQuizzes() {
