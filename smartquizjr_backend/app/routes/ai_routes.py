@@ -21,7 +21,6 @@ async def create_AI_questions_with_topic(ai_request: AIRequest, db: Session = De
         ai_request.questions,
         db=db
     )
-    base_url = "https://smartquiz-jr-production.up.railway.app"
     for i in range(len(questions_model)):
         quiz = QuizCreate(
             question = questions_model[i]['question'],

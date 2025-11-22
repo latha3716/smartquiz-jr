@@ -25,13 +25,22 @@ async function loadQuizzes() {
   const qIds = session.data.questions;
 
   // const allQuestions = await axios.get("http://192.168.1.9:8000/quiz/all");
-  const allQuestions = await axios.get(
-    "https://smartquiz-jr-production.up.railway.app/quiz/all"
+  // const allQuestions = await axios.get(
+  //   "https://smartquiz-jr-production.up.railway.app/quiz/all"
+  // );
+
+  const uuid = session.data.uuid_id;
+
+  const quizzes = await axios.get(
+    `${API_BASE}/quiz/by-uuid/${uuid}`
   );
+
+  return quizzes.data;
+
   // return allQuestions.data.filter(q => qIds.includes(q.id));
-  const quizzes = allQuestions.data;
-  console.log(quizzes)
-  return quizzes;
+  // const quizzes = allQuestions.data;
+  // console.log(quizzes)
+  // return quizzes;
 }
 
 

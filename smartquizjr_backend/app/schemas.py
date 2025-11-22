@@ -10,6 +10,8 @@ class SessionStatus(str, Enum):
     ended = "ended"
 
 class QuizSessionCreate(BaseModel):
+    uuid_id: str
+    topic: str
     template_id: Optional[int]
     questions: List[int]  # List of question IDs or full question dicts
     status: Optional[SessionStatus] = SessionStatus.waiting

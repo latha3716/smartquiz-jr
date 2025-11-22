@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Generate Quiz - SmartQuiz Jr</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="../static/css/teacher_generate.css">
+</head>
+
+<body>
+
+    <h2>Create Quiz Questions</h2>
+
+    <div class="form">
+        <input type="text" id="topic-input" placeholder="Enter Topic (e.g., Solar System)">
+
+        <select id="difficulty-input">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+
+        <select id="age-input">
+            <option value="5">Age 5</option>
+            <option value="6">Age 6</option>
+            <option value="7">Age 7</option>
+            <option value="8">Age 8</option>
+            <option value="9">Age 9</option>
+            <option value="10">Age 10</option>
+        </select>
+
+        <button id="generate-btn">Generate Questions</button>
+    </div>
+
+    <div id="status"></div>
+
+    <script src="../static/js/teacher_generate.js?v=1"></script>
+
+</body>
+</html>

@@ -34,6 +34,10 @@ def get_quizzes_by_topic(db: Session, topic: str, difficulty: str = None):
         query = query.filter(QuizQuestion.difficulty == difficulty)
     return query.all()
 
+def get_quizzes_by_uuid_id(db: Session, uuid_id: str):
+    query = db.query(QuizQuestion).filter(QuizQuestion.uuid_id == uuid_id).all()
+    return query
+
 def evaluate_answers(db: Session, answers_dict: dict, user_id: int = None, session_id: str = None, time_taken_seconds: float = None) -> dict:
     
     from sqlalchemy import select
@@ -110,13 +114,15 @@ def get_leaderboard(db: Session, session_id: str):
     )
     
     
-def create_session(db: Session, question_ids: list, config: dict = None, template_id: int = None):
+def create_session(db: Session, question_ids: list, uuid_id: str, topic: str, config: dict = None, template_id: int = None):
     room_code = generate_room_code()
     session = QuizSession(
         template_id=template_id,
         room_code = room_code,
         questions=question_ids,
         status="waiting",
+        uuid_id = uuid_id,
+        topic = topic,
         config=config or {}
     )
     db.add(session)

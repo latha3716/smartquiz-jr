@@ -1,0 +1,94 @@
+body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #fff7e6, #ffe0b5);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ff914d;
+    margin-bottom: 0.2rem;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+.card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 20px rgba(255, 145, 77, 0.2);
+    animation: fadeIn 0.5s ease;
+}
+
+.label {
+    font-weight: 600;
+    margin-top: 10px;
+    display: block;
+    text-align: left;
+    color: #333;
+}
+
+.input,
+.select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 12px;
+    border: 2px solid #ffd1a1;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.2s;
+}
+
+.input:focus,
+.select:focus {
+    border-color: #ff914d;
+}
+
+.btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    background: #ff914d;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    background: #ff7b22;
+    transform: scale(1.02);
+}
+
+.status {
+    margin-top: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    min-height: 20px;
+}
+
+/* Smooth Fade Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

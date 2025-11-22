@@ -22,6 +22,8 @@ class QuizSession(Base):
     start_time = Column(DateTime(timezone=True), nullable=True)
     end_time = Column(DateTime(timezone=True), nullable=True)
     config = Column(JSON, nullable=True)  # e.g. time_limit, shuffle
+    uuid_id = Column(String)
+    topic = Column(String)
 
 class QuizQuestion(Base):
     __tablename__ = 'quiz_questions'
