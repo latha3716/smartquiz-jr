@@ -119,13 +119,15 @@ def create_quiz(quiz: QuizCreate, db: Session = Depends(get_db)):
 
 @router.post("/create", response_model=QuizSessionOut)
 def create_new_session(session_in: QuizSessionCreate, db: Session = Depends(get_db)):
-    return create_session(db, 
-                          session_in.questions, 
-                          session_in.config, 
-                          session_in.template_id,
-                          session_in.uuid_id,
-                          session_in.topic
+    return create_session(
+        db,
+        session_in.questions,
+        session_in.uuid_id,     # correct
+        session_in.topic,       # correct
+        session_in.config,      # correct
+        session_in.template_id  # correct
     )
+
 
 @router.post("/submit", response_model=QuizResult)
 def submit_quiz(
