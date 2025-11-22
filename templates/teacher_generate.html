@@ -1,11 +1,10 @@
+<!-- teacher_generate.html -->
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Generate Quiz - SmartQuiz Jr</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../static/css/teacher_generate.css">
 </head>
 
@@ -31,6 +30,15 @@
             <option value="10">Age 10</option>
         </select>
 
+        <!-- Added Number of Questions dropdown -->
+        <select id="questions-input">
+            <option value="5">5 Questions</option>
+            <option value="10" selected>10 Questions</option>
+            <option value="15">15 Questions</option>
+            <option value="20">20 Questions</option>
+        </select>
+
+
         <button id="generate-btn">Generate Questions</button>
     </div>
 
@@ -39,4 +47,5 @@
     <script src="../static/js/teacher_generate.js?v=1"></script>
 
 </body>
+
 </html>
