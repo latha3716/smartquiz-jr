@@ -16,6 +16,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://smartquiz-jr.vercel.app",
+        "https://smartquiz-jr-production.up.railway.app", 
         "http://localhost:5500",  # optional for testing
     ],
     allow_credentials = True,
