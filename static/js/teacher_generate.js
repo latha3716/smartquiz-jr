@@ -49,7 +49,8 @@ async function generateQuestions() {
         const data = await res.json();
 
         // Save uuid_id returned by backend
-        localStorage.setItem("uuid_id", data.uuid_id);
+        localStorage.setItem("uuid_id", data.uuid);
+        localStorage.setItem("topic", topic);
 
         showStatus("Questions created successfully!", true);
 

@@ -190,7 +190,8 @@ async function createNewSession() {
 
     const uuid_id = localStorage.getItem("uuid_id");  // <-- fetch stored uuid
     // const topic = topicInput.value.trim();
-    const topic = topicInput ? topicInput.value.trim() : "";
+    // const topic = topicInput ? topicInput.value.trim() : "";
+    const topic = localStorage.getItem("topic") || "";
 
 
     const body = {
