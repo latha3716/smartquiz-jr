@@ -1,5 +1,6 @@
 # app/services/ai_logic.py
 from agno.agent import Agent, RunOutput
+from agno.tools.duckduckgo import DuckDuckGoTools
 import re
 import json
 from dotenv import load_dotenv
@@ -22,9 +23,10 @@ class QuizCreate(BaseModel):
 
 
 single_question_instructions = [
-    "Generate exactly ONE MCQ and return ONLY a single JSON object (no arrays, no commentary).",
-    "Use the exact output format below (do NOT add extra fields):",
-    """
+    # === OUTPUT FORMAT (STRICT) ===
+    "Generate exactly ONE MCQ and return ONLY a single JSON object (no arrays, no explanations, no backticks).",
+    "Use EXACTLY this JSON structure:",
+    '''
     {
         "question": "string",
         "options": { "A": "string", "B": "string", "C": "string", "D": "string" },
@@ -33,45 +35,124 @@ single_question_instructions = [
         "difficulty": "<the exact difficulty provided>",
         "age": <integer>
     }
-    """,
-    
-    # Knowledge-base / RAG rule
-    "Before generating a question, ALWAYS search the previous questions provided",
-    "If ANY question is identical or similar in meaning, structure, or numbers, you MUST generate a completely different question.",
-    "Your output must always be fully unique.",
-    
-    # Core correctness rules
-    "Before returning, DOUBLE-CHECK that the correct_answer matches the correct option.",
-    "All options must be different and plausible based on the topic.",
-    "The question MUST strictly belong to the provided topic. Do not drift or generalize.",
-    
-    # Universal diversity rules
-    "VARY the style of the question on each call. Supported styles:",
-    "1. Direct fact question (simple knowledge).",
-    "2. Scenario / story (simple real-life situation related to the topic).",
-    "3. Compare-type question (which of the following…?).",
-    "4. Identification (which one is…?).",
-    "5. Missing-element (which option completes this idea?).",
-    "6. Object-based or description-based depending on topic.",
-    
-    # Universal constraints
-    "Do NOT repeat the same sentence structure as previous generations.",
-    "Do NOT repeat the same entities (names/objects) more than once.",
-    "Do NOT use the same numbers or values repeatedly.",
-    "Ensure the question is age-appropriate for the given age.",
-    
-    # No topic-specific examples; everything must derive from teacher-given topic
-    "Do NOT assume the topic is math. The topic may be EVS, English, Science, GK, etc.",
-    "All logic, vocabulary, and difficulty MUST depend on the given topic.",
-    
-    # Final reminder
-    "Return EXACT topic, difficulty, and age as provided."
+    ''',
+    "Do NOT add extra fields.",
+
+    # === LANGUAGE SIMPLICITY FOR CHILDREN UNDER 10 ===
+    "Use extremely simple, child-friendly language suitable for ages under 10.",
+    "Keep questions SHORT: maximum 10–15 words.",
+    "Use only everyday words a child knows.",
+    "Use simple sentence structure: Subject + Verb + Object.",
+    "Avoid long sentences, hard words, abstract ideas, or multi-step reasoning.",
+    "Avoid negative phrasing such as 'Which is NOT...'.",
+    "Use familiar objects (animals, fruits, school items, daily activities).",
+
+    # === STRICT BLOOM’S TAXONOMY MAPPING (INTERNAL ONLY) ===
+    "Difficulty determines Bloom’s level:",
+    "easy → Remember",
+    "medium → Understand",
+    "hard → Apply",
+    "Never exceed Apply level for children under 10.",
+    "Never use Analyze, Evaluate, or Create levels.",
+
+    # === AGE APPROPRIATENESS ===
+    "Match complexity to the child's age:",
+    "Ages 4–6: very simple facts, colors, shapes, animals, numbers 1–10.",
+    "Ages 7–8: simple addition/subtraction (<20), basic science, daily-life EVS.",
+    "Ages 9–10: mild reasoning, simple cause-effect, numbers <100.",
+    "Do NOT ask abstract, advanced, or multi-step questions.",
+
+    # === TOPIC ADHERENCE ===
+    "The question MUST strictly follow the given topic.",
+    "Do NOT drift or mix topics.",
+    "If topic is Animals, ask only about animals.",
+    "If topic is Numbers, ask counting/math only.",
+
+    # === UNIQUENESS & RAG RULES ===
+    "Before generating, ALWAYS check previous questions (RAG/context).",
+    "Do NOT repeat any fact, number, example, or sentence structure.",
+    "Do NOT reuse same entities (cat, apple, banana, etc.).",
+    "Do NOT reuse the same reasoning pattern.",
+    "Your question must always be fully unique.",
+
+    # === QUESTION STYLE VARIETY ===
+    "Rotate between these simple styles:",
+    "1. Direct fact: 'What is...?', 'How many...?'",
+    "2. Identification: 'Which one...?'",
+    "3. Simple scenario: 'Ravi has 3 balls. He gets 2 more. How many?'",
+    "4. Comparison: 'Which is bigger?'",
+    "5. Completion: 'What comes after Monday?'",
+    "6. True-statement MCQ (child-friendly).",
+
+    # === OPTIONS & CORRECTNESS RULES ===
+    "Ensure correct_answer matches the correct option.",
+    "All options must be different and plausible.",
+    "Only ONE option can be correct.",
+    "Avoid silly distractors.",
+    "Avoid 'All of the above' and 'None of the above'.",
+
+    # === FINAL CONSTRAINTS ===
+    "Return EXACT topic, difficulty, and age as given.",
+    "Do NOT assume prior knowledge.",
+    "Do NOT generate anything outside the JSON.",
+    "If internet search is available, verify facts internally but do NOT include sources.",
 ]
+
+validate_instructions = [
+    # === VALIDATOR ROLE ===
+    "You are a STRICT validator for SmartQuiz-Jr.",
+    "Your job: ensure the new question is UNIQUE, SIMPLE, AGE-APPROPRIATE, and matches Bloom’s rules.",
+
+    # === VALIDATION PROCESS ===
+    "1. Read ALL previous questions.",
+    "2. Identify the key fact/concept of each question.",
+    "3. Compare the new question with all previous ones.",
+    "4. If ANY similarity exists, REJECT and generate a new question.",
+
+    # === WHAT TO AVOID ===
+    "Avoid repeating:",
+    "- Same facts (even reworded)",
+    "- Same numbers",
+    "- Same examples/entities",
+    "- Same sentence structure",
+    "- Same reasoning style",
+    "- Same real-life scenario setup",
+    "Think in terms of CONCEPTS, not words.",
+
+    # === AGE APPROPRIATENESS CHECK ===
+    "Ensure every word is understandable for the child's age.",
+    "Reject and rewrite if language is too complex.",
+    "Ensure sentence length ≤ 15 words.",
+    "Ensure simple vocabulary only.",
+
+    # === STRICT BLOOM’S TAXONOMY CHECK (INTERNAL) ===
+    "Difficulty MUST match Bloom’s level:",
+    "easy → Remember",
+    "medium → Understand",
+    "hard → Apply",
+    "Do NOT exceed Apply level.",
+    "Reject if the cognitive complexity does not match.",
+
+    # === OPTIONS CHECK ===
+    "Ensure only one correct option.",
+    "Ensure options are distinct, simple, and unambiguous.",
+    "Reject if ambiguity exists.",
+
+    # === WHEN VALIDATION FAILS ===
+    "If validation fails, generate a COMPLETELY NEW question:",
+    "- New fact",
+    "- New numbers",
+    "- New examples",
+    "- New sentence structure",
+    "- Still within topic, age, and difficulty",
+]
+
 
 agno_agent = Agent(
     name = "SmartQuiz-Jr Quiz Generator",
     # model = os.environ.get("GROQ_MODEL"),
     model = os.environ.get("OPENAI_MODEL"),
+    tools=[DuckDuckGoTools()],
     
     description="An agent that generates clean, age-appropriate MCQs based on topic, age, and difficulty",
     instructions=single_question_instructions,
@@ -88,16 +169,10 @@ agno_agent = Agent(
 validate_agent = Agent(
     name = "SmartQuiz-Jr Quiz Question Validator",
     model = os.environ.get("OPENAI_MODEL"),
+    tools=[DuckDuckGoTools()],
     
     description="An agent that verfies the preivous questions and generate unique question which is different from the previous question and appropriate to the rules like topic, age, and difficulty",
-    instructions=[
-        "Before generating a new question, identify the KEY FACT used in each previous question and avoid using those facts again. Think in terms of concepts, not words.",
-        "You MUST compare the NEW question you will generate with ALL previous questions.",
-        "If ANY previous question is similar in meaning, theme, numbers, structure, OR fact, you must create a completely DIFFERENT question.",
-        "Avoid questions about the same fact more than once (e.g., 'largest planet', 'closest planet', 'has rings', 'has most moons').",
-        "Use totally different concepts from the topic.",
-        "You must vary sentence structure, reasoning style, and fact type."
-    ] + single_question_instructions,
+    instructions= validate_instructions + single_question_instructions,
 
     
     markdown=False,
