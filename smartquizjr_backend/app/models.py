@@ -71,4 +71,5 @@ class Rag_temp_content(Base):
     
     id = Column(Integer, primary_key=True)
     uuid_id = Column(String, nullable=False)
+    # content = Column(JSON)
     content = Column(JSONB)

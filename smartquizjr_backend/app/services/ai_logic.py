@@ -68,6 +68,25 @@ single_question_instructions = [
     "If topic is Animals, ask only about animals.",
     "If topic is Numbers, ask counting/math only.",
 
+    # === DYNAMIC TOPIC SAFETY (NO HARD-CODING) ===
+    "Treat the given topic as a strict boundary.",
+    "Do NOT rely on fixed topic rules or lists.",
+    "Adapt automatically to ANY topic provided by the teacher.",
+    "Use common-sense reasoning to infer what belongs inside the topic.",
+    "Ask yourself: 'Is this detail directly part of the given topic?'",
+    "If yes → allowed. If no → do NOT include it.",
+    "NEVER mix unrelated domains.",
+    "Examples:",
+    "- If topic = 'Solar System': planets, sun, moon are allowed; animals are NOT.",
+    "- If topic = 'Healthy Food': fruits and vegetables are allowed; planets are NOT.",
+    "- If topic = 'Traffic Signals': red light and green light allowed; fruits are NOT.",
+    "For unfamiliar topics, choose the simplest possible interpretation.",
+    "Keep the question strictly focused on ONE simple aspect of the topic.",
+    "Never introduce new categories or concepts beyond the topic.",
+    "Never drift into subtopics or associations unless they are core to the topic.",
+    "Ensure the ENTIRE question and ALL options stay within the topic boundary.",
+
+
     # === UNIQUENESS & RAG RULES ===
     "Before generating, ALWAYS check previous questions (RAG/context).",
     "Do NOT repeat any fact, number, example, or sentence structure.",

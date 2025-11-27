@@ -5,3 +5,10 @@ package.json
 package-lock.json
 node_modules
 __pycache__
+tests/
+tools/
+__pycache__
+smartquiz_summary.csv
+smartquiz_summary.pdf
+smartquiz_summary.xlsx
+smartquiz_test_results.csv
