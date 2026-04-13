@@ -1,4 +1,4 @@
-const API_BASE = "https://smartquiz-jr-production.up.railway.app";
+const API_BASE = "https://smartquiz-jr-production-3ccd.up.railway.app";
 
 // DOM Elements
 const topicInput = document.getElementById("topic-input");
