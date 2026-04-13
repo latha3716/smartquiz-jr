@@ -2,7 +2,7 @@
 let questions = [];
 let answers = {};
 let quizStartTime = null;
-const API_BASE = "https://smartquiz-jr-production.up.railway.app";
+const API_BASE = "https://smartquiz-jr-production-3ccd.up.railway.app";
 
 // initQuiz();
 
@@ -22,13 +22,13 @@ const API_BASE = "https://smartquiz-jr-production.up.railway.app";
 async function loadQuizzes() {
   // const session = await axios.get(`http://192.168.1.9:8000/quiz/session/room/${roomcode}`);
   const session = await axios.get(
-    `https://smartquiz-jr-production.up.railway.app/quiz/session/room/${roomcode}`
+    `https://smartquiz-jr-production-3ccd.up.railway.app/quiz/session/room/${roomcode}`
   );
   const qIds = session.data.questions;
 
   // const allQuestions = await axios.get("http://192.168.1.9:8000/quiz/all");
   // const allQuestions = await axios.get(
-  //   "https://smartquiz-jr-production.up.railway.app/quiz/all"
+  //   "https://smartquiz-jr-production-3ccd.up.railway.app/quiz/all"
   // );
 
   const uuid = session.data.uuid_id;
@@ -183,7 +183,7 @@ async function submitAnswers() {
     //   { "answers": answers }
     // );
     const response = await axios.post(
-      `https://smartquiz-jr-production.up.railway.app/quiz/submit?user_id=${userId}&session_id=${sessionId}&time_taken_seconds=${timeTakenSeconds}`,
+      `https://smartquiz-jr-production-3ccd.up.railway.app/quiz/submit?user_id=${userId}&session_id=${sessionId}&time_taken_seconds=${timeTakenSeconds}`,
       { "answers": answers }
     );
 
@@ -206,7 +206,7 @@ async function submitAnswers() {
       try {
         // const res = await fetch(`http://192.168.1.9:8000/quiz/session/room/${sessionId}`);
         const res = await fetch(
-          `https://smartquiz-jr-production.up.railway.app/quiz/session/room/${sessionId}`
+          `https://smartquiz-jr-production-3ccd.up.railway.app/quiz/session/room/${sessionId}`
         );
         if (!res.ok) {
           // keep waiting; optionally handle 404
