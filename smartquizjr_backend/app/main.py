@@ -15,8 +15,8 @@ app = FastAPI(title="SmartQuiz Jr Backend", version="1.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://smartquiz-jr.vercel.app",
-        "https://smartquiz-jr-production.up.railway.app", 
+        "https://smartquiz-jr-eight.vercel.app",
+        "https://smartquiz-jr-production-3ccd.up.railway.app", 
         "http://localhost:5500",  # optional for testing
     ],
     allow_credentials = True,
