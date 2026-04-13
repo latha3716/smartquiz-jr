@@ -107,7 +107,7 @@ inputs.forEach(input => {
 //         //     `http://192.168.1.9:8000/quiz/join?username=${username}&room_code=${roomcode}`
 //         // );
 //         const response = await axios.post(
-//             `https://smartquiz-jr-production.up.railway.app/quiz/join?username=${username}&room_code=${roomcode}`
+//             `https://smartquiz-jr-production-3ccd.up.railway.app/quiz/join?username=${username}&room_code=${roomcode}`
 //         );
 
 //         const data = response.data;
@@ -167,7 +167,7 @@ document.querySelector('form').addEventListener('submit', async (e) => {
     try {
         // API call (update URL as needed)
         const response = await axios.post(
-            `https://smartquiz-jr-production.up.railway.app/quiz/join?username=${encodeURIComponent(username)}&room_code=${encodeURIComponent(roomcode)}`
+            `https://smartquiz-jr-production-3ccd.up.railway.app/quiz/join?username=${encodeURIComponent(username)}&room_code=${encodeURIComponent(roomcode)}`
         );
 
         const data = response.data;
