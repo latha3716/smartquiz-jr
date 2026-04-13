@@ -171,7 +171,7 @@ async function loadLeaderboard() {
   try {
     // Fetch session data
     const sessionRes = await fetch(
-      `https://smartquiz-jr-production.up.railway.app/quiz/session/room/${roomcode}`
+      `https://smartquiz-jr-production-3ccd.up.railway.app/quiz/session/room/${roomcode}`
     );
 
     if (!sessionRes.ok) {
@@ -185,7 +185,7 @@ async function loadLeaderboard() {
 
     // Fetch leaderboard data
     const leaderboardRes = await fetch(
-      `https://smartquiz-jr-production.up.railway.app/quiz/session/room/${roomcode}/leaderboard`
+      `https://smartquiz-jr-production-3ccd.up.railway.app/quiz/session/room/${roomcode}/leaderboard`
     );
 
     if (!leaderboardRes.ok) {
