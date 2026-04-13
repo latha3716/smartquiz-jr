@@ -233,7 +233,7 @@ async function populateLeaderboard() {
 
   try {
     const response = await fetch(
-      `https://smartquiz-jr-production.up.railway.app/quiz/session/${room}/leaderboard`
+      `https://smartquiz-jr-production-3ccd.up.railway.app/quiz/session/${room}/leaderboard`
     );
 
     if (!response.ok) {
